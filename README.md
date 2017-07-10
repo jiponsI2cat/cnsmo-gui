@@ -1,6 +1,6 @@
 # CnsmoWeb
 
-This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 1.0.0.
+This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 1.0.0. This is a web application project in order to provide an UI for the cnsmo-api
 
 ## Development server
 
