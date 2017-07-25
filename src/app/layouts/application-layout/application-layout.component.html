@@ -1,0 +1,126 @@
+<body>
+  <nav class="navbar navbar-toggleable-md navbar-inverse fixed-top bg-inverse">
+    <button class="navbar-toggler navbar-toggler-right hidden-lg-up" type="button" data-toggle="collapse" data-target="#navbarsExampleDefault"
+      aria-controls="navbarsExampleDefault" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+    <a class="navbar-brand" href="#">CNSMO Web</a>
+
+    <div class="collapse navbar-collapse" id="navbarsExampleDefault">
+      <ul class="navbar-nav mr-auto">
+        <!--<li class="nav-item active">
+          <a class="nav-link" href="#">Home <span class="sr-only">(current)</span></a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="#">Settings</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="#">Profile</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="#">Help</a>
+        </li>-->
+      </ul>
+      <div class="form-inline mt-2 mt-md-0">
+        <button class="btn btn-outline-secondary my-2 my-sm-0" (click)="logout()" type="submit"><i class="fa fa-sign-out" aria-hidden="true"></i> Log out</button>
+      </div>
+    </div>
+  </nav>
+
+  <div class="container-fluid">
+    <div class="row">
+      <nav class="col-sm-3 col-md-2 hidden-xs-down sidebar">
+        <ul class="nav nav-pills flex-column">
+          <li class="nav-item">
+            <a class="nav-link active" href="#">Home Page <span class="sr-only">(current)</span></a>
+          </li>
+        </ul>
+
+        <!--<ul class="nav nav-pills flex-column">
+          <li class="nav-item">
+            <a class="nav-link" href="#">Nav item</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="#">Nav item again</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="#">One more nav</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="#">Another nav item</a>
+          </li>
+        </ul>
+
+        <ul class="nav nav-pills flex-column">
+          <li class="nav-item">
+            <a class="nav-link" href="#">Nav item again</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="#">One more nav</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="#">Another nav item</a>
+          </li>
+        </ul>-->
+      </nav>
+
+      <main class="col-sm-9 offset-sm-3 col-md-10 offset-md-2 pt-3 bg-faded">
+        <ng-content></ng-content>
+
+        <!-- START SERVICES -->
+        <h1>Services</h1>
+
+        <!-- <form [formGroup]="serviceForm">
+          <div class="form-group">
+            <app-form-input [control]="loginForm.controls.ip" [errorDefs]="['required']">
+              <input type="text" class="form-control" formControlName="ip" name="ip" placeholder="Ip">
+            </app-form-input>
+          </div>
+          <div class="form-group">
+            <app-form-input [control]="loginForm.controls.port" [errorDefs]="['required']">
+              <input type="port" class="form-control" formControlName="port" name="port" placeholder="Port">
+            </app-form-input>
+          </div>
+          <button type="submit" class="btn btn-block btn-primary" (click)="login()" [disabled]="!loginForm.valid">Configure</button>
+        </form> -->
+
+        <span *ngIf="msgResult">Result: {{msgResult}}</span>
+        <!-- END SERVICES -->
+
+        <!-- OPERATIONS SERVICES -->
+        <h1>Operations</h1>
+
+        <table class="table table-hover">
+          <thead>
+            <tr>
+              <th colspan="3">Operation</th>
+              <th>Action</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let operation of operations">
+              <td colspan="3">{{operation.name}}</td>
+              <td>
+                <button type="button" class="btn btn-sm btn-primary" (click)="open(content)">Configure</button>
+              </td>
+            </tr>
+            <!-- <tr>
+              <th scope="row">2</th>
+              <td>Jacob</td>
+              <td>Thornton</td>
+              <td>@fat</td>
+            </tr>
+            <tr>
+              <th scope="row">3</th>
+              <td colspan="2">Larry the Bird</td>
+              <td>@twitter</td>
+            </tr> -->
+          </tbody>
+        </table>
+        <!-- END SERVICES -->
+
+      </main>
+    </div>
+  </div>
+</body>
+

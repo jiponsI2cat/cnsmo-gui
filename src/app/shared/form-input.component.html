@@ -1,0 +1,7 @@
+<div class="form-group" [ngClass]="{'text-danger': errorMessage}">
+  <label *ngIf="labelText" class="control-label" [ngClass]="labelCss">{{ labelText }}</label>
+    <div  [ngClass]="fieldCss">
+    <ng-content></ng-content>
+    </div>
+  <span class="help-block" *ngIf="errorMessage">{{errorMessage}}</span>
+</div>
