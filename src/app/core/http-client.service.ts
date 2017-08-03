@@ -51,25 +51,20 @@ export class HttpClientService {
 
   request(data: any) {
     const api = environment.api;
+    const authUrl = environment.authUrl;
     const options = data.options || {};
     const headers = new Headers();
-    if (options && options.image) {
-      headers.append('Content-Type', 'image/gif');
-    } else {
-      headers.append('Content-Type', 'application/json');
-    }
+    headers.append('Content-Type', 'application/json');
 
-    if (data.url === '/user/login') {
-      headers.append('Authorization', 'Basic ' + btoa(data.body.username + ':' + data.body.password));
-      headers.append('Content-Type', 'application/x-www-form-urlencoded');
-
-      delete data.body;
+    if (data.url === authUrl) {
+      /* headers.append('Content-Type', 'application/x-www-form-urlencoded');
+      delete data.body; */
     } else {
       const userData = JSON.parse(localStorage.getItem('currentUser'));
       if (!userData) {
         this.router.navigate(['/login']);
       } else {
-        headers.append('Authorization', userData.token);
+        headers.append('Authorization', `Bearer ${userData.token}`);
       }
     }
     return this.http.request(api + data.url, {
@@ -81,32 +76,21 @@ export class HttpClientService {
       if ((response as any)._body === '') {
         return null;
       } else {
-        let obj: any;
-        if (options && options.image) {
-          // obj = window.btoa((response as any)._body);
-
-        } else {
-          obj = response.json();
-        }
+        const obj = response.json();
         return obj;
       }
     }).catch((error: any) => {
-      const errMsg = error.message || 'Server error';
-      if (error.status >= 400) {
-        this.tryCatchErrors(error, errMsg);
-      }
-      this.checkToken(error);
-      if (error.status === 0) {
-        const serverDown = 'Web Server';
-        /*this.notification.error(`The ${serverDown} may be down, too busy,
-                                 or experiencing other problems preventing
-                                 it from responding to requests.`, 'Ok');*/
-      }
-      return Observable.throw(errMsg);
+      return this.checkError(error);
     }).share();
   }
 
-  checkToken(error) {
+  /**
+   * This function help the request function to detect
+   * the error and to fire a notification service
+   * to provide a feedback to user through an UI artefact
+   * (notification, message, etc.)
+  */
+  checkError(error) {
     if (error.status === 401) {
       // if token is expired
       if (typeof error.json().msg === 'string' && error.json().msg === 'Invalid token!') {
@@ -117,107 +101,30 @@ export class HttpClientService {
         this.router.navigate(['/login']);
       }
     }
-  }
+    if (error.status === 0) {
+      const serverDown = 'Web Server';
+      /*this.notification.error(`The ${serverDown} may be down, too busy,
+                               or experiencing other problems preventing
+                               it from responding to requests.`, 'Ok');*/
+    }
+    const errorMsg = error.message || 'Server error';
+    if (error.status >= 400) {
+      tryCatchErrors(error, error);
+    }
+    return Observable.throw(error);
 
-  tryCatchErrors(error, errMsg) {
-    try {
-      if (typeof error.json().msg === 'string' && error.json().msg !== 'Invalid token!') {
-        /*this.notification.error(error.json().msg);*/
-      } else {
-        /*this.notification.error(`Error: ` + error.status);*/
+    function tryCatchErrors(err, errMsg) {
+      try {
+        if (typeof error.json().msg === 'string' && error.json().msg !== 'Invalid token!') {
+          /*this.notification.error(error.json().msg);*/
+        } else {
+          /*this.notification.error(`Error: ` + error.status);*/
+        }
+      } catch (error) {
+        return Observable.throw(errMsg);
       }
-    } catch (error) {
-      return Observable.throw(errMsg);
     }
   }
 
-  getImage(url: string) {
-    function arrayBufferToBase64(buffer) {
-      let binary = '';
-      const bytes = new Uint8Array(buffer);
-      const len = bytes.byteLength;
-
-      for (let i = 0; i < len; i++) {
-        binary += String.fromCharCode(bytes[i]);
-      }
-      return window.btoa(binary);
-    }
-    return Observable.create(observer => {
-      const req = new XMLHttpRequest();
-      const api = environment.api;
-      const userData = JSON.parse(localStorage.getItem('currentUser'));
-      if (!userData) {
-        this.router.navigate(['/login']);
-        return false;
-      }
-
-      req.open('get', api + url);
-      req.responseType = 'arraybuffer';
-      req.setRequestHeader('Authorization', userData.token);
-
-      req.onreadystatechange = function () {
-        if (req.readyState === 4 && req.status === 200) {
-          const res = arrayBufferToBase64(req.response);
-          observer.next(res);
-          observer.complete();
-        }
-      };
-      req.send();
-    });
-  }
-
-  uploadFile(url: string, file: File[], form: any, formData: FormData) {
-
-    return Observable.create(observer => {
-      const xhr: XMLHttpRequest = new XMLHttpRequest();
-      const api = environment.api;
-      const userData = JSON.parse(localStorage.getItem('currentUser'));
-      if (!userData) {
-        this.router.navigate(['/login']);
-        return false;
-      }
-      xhr.onreadystatechange = () => {
-        if (xhr.readyState === 4) {
-          if (xhr.status === 200) {
-            observer.next(JSON.parse(xhr.response));
-            observer.complete();
-            // resolve(<any>JSON.parse(xhr.response));
-          } else {
-            observer.error(JSON.parse(xhr.response));
-            observer.complete();
-
-            // reject(xhr.response);
-          }
-        }
-      };
-
-      xhr.open('post', api + url, true);
-      xhr.setRequestHeader('Authorization', userData.token);
-      xhr.send(formData);
-
-    });
-  }
-
-  
 
 }
-
-/*@app.route('/dataset/profile/img/upload', methods=['POST'])
-def uploadprofiledataset():
-    if request.environ['HTTP_AUTHORIZATION'] == 'valid':
-        dataset = request.form['dataset']
-        user = request.form['user']
-        file = request.files['file']
-        file.filename = 'profile.'+file.filename.rsplit('.', 1)[1]
-        if file and allowed_file(file.filename):
-            filename=secure_filename(file.filename) 
-            directory = os.path.join(app.config['USERS_FOLDER'],user,'DATASETS',dataset,'PROFILE')  
-            if not os.path.exists(directory):
-                os.makedirs(directory)  
-           filePath = os.path.join(directory,filename) 
-           err = file.save(filePath) 
-           if err != None:
-                return '{"error": "Error uploading file"}' 
-           return "Success"
-    return 'Fail',401 #No authorization
-*/

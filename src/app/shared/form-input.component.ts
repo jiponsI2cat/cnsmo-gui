@@ -10,11 +10,16 @@ export class FormInputComponent implements OnInit, OnChanges {
   @Input() labelText: string = '';
   @Input() fieldCss: string = '';
   @Input() labelCss: string = '';
+  @Input() inline: boolean;
   @Input() control: any;
   @Input() errorDefs: any;
 
   private errorMessage: string = '';
-  private validationMessages = { required: 'Required field' };
+  private validationMessages = {
+    required: 'Required field',
+    min: 'Value should be greater than ',
+    max: 'Value should be less than '
+  };
   constructor() { }
 
   ngOnInit() {
@@ -27,6 +32,12 @@ export class FormInputComponent implements OnInit, OnChanges {
         this.errorDefs.some(key => {
           if (this.control.errors[key]) {
             this.errorMessage = this.validationMessages[key];
+            if (key === 'max') {
+              this.errorMessage += this.control.errors[key].max;
+            }
+            if (key === 'min') {
+              this.errorMessage += this.control.errors[key].min;
+            }
             return true;
           }
         });

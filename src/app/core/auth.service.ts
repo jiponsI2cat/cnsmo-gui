@@ -1,13 +1,13 @@
+import { environment } from '../../environments/environment';
 import { Router } from '@angular/router';
 /*import { NotificationService } from './notification.service';
 */import { HttpClientService } from './http-client.service';
 import { Injectable } from '@angular/core';
-import { User } from 'app/users/shared/user';
 
 @Injectable()
 export class AuthService {
 
-  public currentUser: User = null;
+  public currentUser = null;
 
   constructor(
     private http: HttpClientService,
@@ -22,12 +22,12 @@ export class AuthService {
 
     const userData = JSON.parse(localStorage.getItem('currentUser'));
     if (!userData) { return; }
-    this.currentUser = new User(userData);
+    this.currentUser = userData;
 
   }
 
   public login(userData: any, callBack?: any) {
-    const response = this.http.post('/authenticate', userData).finally(() => {
+    const response = this.http.post(environment.authUrl, userData).finally(() => {
       if (callBack) {
         callBack.apply();
       }
@@ -35,7 +35,7 @@ export class AuthService {
     response.subscribe((data: any) => {
 /*      this.notification.message('Welcome Back to Symphony!', 'Close', 3000);
 */      localStorage.setItem('currentUser', JSON.stringify(data));
-      this.currentUser = new User(data);
+      this.currentUser = data;
     }, (error: any) => {
 /*      this.notification.error('Cannot Login!');
 */    });
