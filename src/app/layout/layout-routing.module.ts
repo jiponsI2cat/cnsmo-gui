@@ -7,7 +7,8 @@ const routes: Routes = [
         path: '', component: LayoutComponent,
         children: [
             { path: 'dashboard', loadChildren: './dashboard/dashboard.module#DashboardModule' },
-            { path: 'firewall', loadChildren: './firewall/firewall.module#FirewallModule' }
+            { path: 'firewall', loadChildren: './firewall/firewall.module#FirewallModule' },
+            { path: 'nodes', loadChildren: './nodes/nodes.module#NodesModule' }
         ]
     }
 ];

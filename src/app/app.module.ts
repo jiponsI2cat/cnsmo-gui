@@ -10,7 +10,7 @@ import { AppComponent } from './app.component';
 import { AuthGuard } from './shared';
 import { AuthService } from 'app/core/auth.service';
 import { CoreModule } from 'app/core/core.module';
-import { LoginGuard } from "app/shared/guard";
+import { LoginGuard } from 'app/shared/guard';
 // AoT requires an exported function for factories
 export function HttpLoaderFactory(http: Http) {
     // for development

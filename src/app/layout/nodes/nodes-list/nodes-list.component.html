@@ -1,0 +1,21 @@
+
+<div class="table-container">
+  <table class="table table-striped">
+    <thead>
+      <tr>
+        <th>#</th>
+        <th>Instance Id</th>
+        <th>Services</th>
+        <th>VPN Address</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let node of nodes; index as i">
+        <td>{{i}}</td>
+        <td>{{node?.instanceId}}</td>
+        <td>{{node?.services.toString()}}</td>
+        <td>{{node?.vpnAddress}}</td>
+      </tr>
+    </tbody>
+  </table>
+</div>
