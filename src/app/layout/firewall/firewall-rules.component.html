@@ -1,0 +1,27 @@
+
+<div class="table-container">
+  <table class="table table-striped">
+    <thead>
+      <tr>
+        <th>#</th>
+        <th>Direction</th>
+        <th>Protocol</th>
+        <th>Dest.Port</th>
+        <th>Dest/Src</th>
+        <th>IP Range</th>
+        <th>Action</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let rule of rules; index as i">
+        <td>{{i}}</td>
+        <td>{{rule?.direction}}</td>
+        <td>{{rule?.protocol}}</td>
+        <td>{{rule?.dst_port}}</td>
+        <td>{{rule?.dst_src}}</td>
+        <td>{{rule?.ip_range}}</td>
+        <td>{{rule?.action}}</td>
+      </tr>
+    </tbody>
+  </table>
+</div>

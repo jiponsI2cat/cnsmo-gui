@@ -1,0 +1,4 @@
+  <button type="submit" class="btn btn-primary" [ngClass]="btnClass" [disabled]="disabled || loading">
+    <ng-content *ngIf="!loading"></ng-content>
+    <i *ngIf="loading" class="fa fa-spinner fa-pulse fa-1x fa-fw"></i>
+  </button>

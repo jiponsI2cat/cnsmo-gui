@@ -1,0 +1,23 @@
+<div [@routerTransition]>
+    <app-page-header [heading]="'Firewall'" [icon]="'fa-shield'"></app-page-header>
+    <div class="row">
+        <div class="col col-sm-12">
+            <div class="card mb-3">
+                <div class="card-header">
+                    Rules
+                </div>
+                <app-firewall-rules></app-firewall-rules>
+            </div>
+        </div>
+        <div class="col col-sm-6">
+            <div class="card mb-3">
+                <div class="card-header">
+                    Add Rule
+                </div>
+                <div class="card-block">
+                    <app-add-firewall-rule></app-add-firewall-rule>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
