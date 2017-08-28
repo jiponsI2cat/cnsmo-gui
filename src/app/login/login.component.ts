@@ -12,7 +12,7 @@ import { FormGroup, Validators, FormBuilder } from '@angular/forms';
     animations: [routerTransition()]
 })
 export class LoginComponent implements OnInit {
-    private loginForm: FormGroup;
+    public loginForm: FormGroup;
     constructor(
         private router: Router,
         private formBuilder: FormBuilder,

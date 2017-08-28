@@ -2,10 +2,10 @@
     <h2 class="text-muted">CNSMO Dashboard <small>Statistics Overview</small></h2>
     <div class="row">
         <div class="col-xl-3 col-lg-6">
-            <app-stat [bgClass]="'card-primary'" [icon]="'fa-shield'" [count]="3" [label]="'Firewall Rules'"></app-stat>
+            <app-stat [bgClass]="'card-primary'" [link]="['/firewall']" [icon]="'fa-shield'" [count]="3" [label]="'Firewall Rules'"></app-stat>
         </div>
         <div class="col-xl-3 col-lg-6">
-            <app-stat [bgClass]="'card-info'" [icon]="'fa-server'" [count]="2" [label]="'SDN Nodes'"></app-stat>
+            <app-stat [bgClass]="'card-info'" [link]="['/nodes']" [icon]="'fa-server'" [count]="2" [label]="'SDN Nodes'"></app-stat>
         </div>
         <!-- <div class="col-xl-3 col-lg-6">
             <app-stat [bgClass]="'card-success'" [icon]="'fa-shopping-cart'" [count]="124" [label]="'New Orders!'"></app-stat>

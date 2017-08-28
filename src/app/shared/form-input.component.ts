@@ -14,7 +14,7 @@ export class FormInputComponent implements OnInit, OnChanges {
   @Input() control: any;
   @Input() errorDefs: any;
 
-  private errorMessage: string = '';
+  public errorMessage: string = '';
   private validationMessages = {
     required: 'Required field',
     min: 'Value should be greater than ',
