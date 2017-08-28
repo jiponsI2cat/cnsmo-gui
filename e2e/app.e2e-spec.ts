@@ -1,6 +1,6 @@
 import { SbAdminCliUpdatePage } from './app.po';
 
-describe('sb-admin-cli-update App', () => {
+describe('cnsmo_web App', () => {
   let page: SbAdminCliUpdatePage;
 
   beforeEach(() => {
