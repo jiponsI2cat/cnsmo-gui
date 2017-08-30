@@ -1,14 +1,14 @@
-import { CnsmoWebPage } from './app.po';
+import { SbAdminCliUpdatePage } from './app.po';
 
-describe('cnsmo-web App', () => {
-  let page: CnsmoWebPage;
+describe('cnsmo_web App', () => {
+  let page: SbAdminCliUpdatePage;
 
   beforeEach(() => {
-    page = new CnsmoWebPage();
+    page = new SbAdminCliUpdatePage();
   });
 
-  it('should display message saying app works', () => {
+  it('should display welcome message', () => {
     page.navigateTo();
-    expect(page.getParagraphText()).toEqual('app works!');
+    expect(page.getParagraphText()).toEqual('Welcome to app!!');
   });
 });
