@@ -9,11 +9,13 @@ import { Node } from '../shared/node';
 })
 export class NodesListComponent implements OnInit {
   nodes: Node[];
+  loading: boolean;
   constructor(private nodesService: NodesService) {
-    nodesService.nodesUpdated$.subscribe(nodes => { this.nodes = nodes; });
+    nodesService.nodesUpdated$.subscribe(nodes => { this.nodes = nodes; this.loading = false; });
   }
 
   ngOnInit() {
+    this.loading = true;
     this.nodesService.getNodes();
   }
 

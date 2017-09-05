@@ -1,23 +1,21 @@
-
 <div class="table-container">
-  <table class="table table-striped">
-    <thead>
-      <tr>
-        <th>#</th>
-        <th>Instance Id</th>
-        <th>Services</th>
-        <th>IP Address</th>
-        <th>VPN Address</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr *ngFor="let node of nodes; index as i">
-        <td>{{i}}</td>
-        <td>{{node?.instanceId}}</td>
-        <td>{{node?.services.toString()}}</td>
-        <td>{{node?.ipAddress}}</td>
-        <td>{{node?.vpnAddress}}</td>
-      </tr>
-    </tbody>
-  </table>
+  <ngb-accordion [closeOthers]="true" activeIds="static-1">
+    <ngb-panel *ngIf="loading" [disabled]="true">
+      <ng-template ngbPanelTitle>
+        <i class="fa fa-spinner fa-pulse fa-fw"></i>
+        <span class="sr-only">Loading...</span>
+      </ng-template>
+    </ngb-panel>
+    <ngb-panel *ngFor="let node of nodes; index as i">
+      <ng-template ngbPanelTitle>
+        <strong><i class="fa fa-server"></i> {{node?.instanceId}} <small>{{node?.ipAddress}}</small></strong>
+      </ng-template>
+      <ng-template ngbPanelContent>
+        <ul>
+          <li><strong>Services:</strong> {{node?.services.toString()}}</li>
+          <li><strong>VPN Address:</strong> {{node?.vpnAddress}}</li>
+        </ul>
+      </ng-template>
+    </ngb-panel>
+  </ngb-accordion>
 </div>
