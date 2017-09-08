@@ -26,6 +26,7 @@ export class NodesFlowsComponent implements OnChanges {
   blockPort(port) {
     this.loading = true;
     this.nodesService.blockPort(this.instanceId, port);
+    this.port = '';
   }
 
 }
