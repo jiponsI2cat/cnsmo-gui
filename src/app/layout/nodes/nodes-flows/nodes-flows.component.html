@@ -1,0 +1,31 @@
+<div *ngIf="!loading">
+  <table *ngIf="flows && flows[instanceId]" class="table table-hover table-sm">
+    <thead class="ng-tns-c24-2">
+      <tr class="ng-tns-c24-2">
+        <th class="ng-tns-c24-2">#</th>
+        <th class="ng-tns-c24-2">Port</th>
+        <th class="ng-tns-c24-2">Actions</th>
+      </tr>
+    </thead>
+    <tbody class="ng-tns-c24-2">
+      <tr *ngFor="let port of flows[instanceId]; index as i" class="ng-tns-c24-2">
+        <th class="ng-tns-c24-2" scope="row">{{i}}</th>
+        <td class="ng-tns-c24-2">{{port}}</td>
+        <td class="ng-tns-c24-2"><a href="#">Delete</a></td>
+      </tr>
+    </tbody>
+  </table>
+  <div style="padding:0" class="form-group input-group col-md-5">
+    <span class="input-group-addon"><i class="fa fa-ban"></i></span>
+    <input class="form-control" placeholder="0-65535" type="text" [(ngModel)]="port" #ctrl="ngModel" required>
+    <span class="input-group-btn">
+      <button class="btn btn-secondary" [disabled]="!ctrl.valid" (click)="blockPort(port)" type="button">
+        <i class="fa fa-plus"></i>
+      </button>
+    </span>
+  </div>
+</div>
+<div *ngIf="loading">
+  <i class="fa fa-spinner fa-pulse fa-fw"></i>
+  <span>Loading flows...</span>
+</div>
