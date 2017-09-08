@@ -84,6 +84,8 @@ export class NodesService {
       this.flows[instanceId] = data;
       this.updateFlows(this.flows);
     }, (error: any) => {
+      this.flows[instanceId] = [-1];
+      this.updateFlows(this.flows);
       console.log(error);
       // this.notification.error('Cannot Login!');
     });

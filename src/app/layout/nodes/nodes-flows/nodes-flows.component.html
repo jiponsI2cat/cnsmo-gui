@@ -9,9 +9,9 @@
     </thead>
     <tbody class="ng-tns-c24-2">
       <tr *ngFor="let port of flows[instanceId]; index as i" class="ng-tns-c24-2">
-        <th class="ng-tns-c24-2" scope="row">{{i}}</th>
-        <td class="ng-tns-c24-2">{{port}}</td>
-        <td class="ng-tns-c24-2"><a href="#">Delete</a></td>
+        <th *ngIf="port!=-1" class="ng-tns-c24-2" scope="row">{{i}}</th>
+        <td *ngIf="port!=-1" class="ng-tns-c24-2">{{port}}</td>
+        <td *ngIf="port!=-1" class="ng-tns-c24-2"><a href="#">Delete</a></td>
       </tr>
       <tr>
         <th class="ng-tns-c24-2" scope="row">{{flows[instanceId].length}}</th>
