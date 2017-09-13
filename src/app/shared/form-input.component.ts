@@ -7,14 +7,14 @@ import { Component, OnInit, OnChanges, Input } from '@angular/core';
   styleUrls: ['./form-input.component.scss']
 })
 export class FormInputComponent implements OnInit, OnChanges {
-  @Input() labelText: string = '';
-  @Input() fieldCss: string = '';
-  @Input() labelCss: string = '';
+  @Input() labelText;
+  @Input() fieldCss;
+  @Input() labelCss;
   @Input() inline: boolean;
   @Input() control: any;
   @Input() errorDefs: any;
 
-  public errorMessage: string = '';
+  public errorMessage;
   private validationMessages = {
     required: 'Required field',
     min: 'Value should be greater than ',

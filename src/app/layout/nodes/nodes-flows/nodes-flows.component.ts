@@ -13,7 +13,10 @@ export class NodesFlowsComponent implements OnChanges {
   loading = true;
   port = '';
   constructor(private nodesService: NodesService) {
-    nodesService.nodeFlowsUpdated$.subscribe(flows => { this.flows = flows; this.loading = false; });
+    nodesService.nodeFlowsUpdated$.subscribe(flows => {
+      this.flows = flows;
+      if (this.flows[this.instanceId]) { this.loading = false; }
+    });
   }
 
   ngOnChanges(input) {
