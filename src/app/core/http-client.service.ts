@@ -5,7 +5,6 @@ import { Router } from '@angular/router';
 
 import { environment } from '../../environments/environment';
 import { NotificationService } from './notification/notification.service';
-import { CheckService } from './check.service';
 
 @Injectable()
 export class HttpClientService {
@@ -15,7 +14,7 @@ export class HttpClientService {
     private http: Http,
     private router: Router,
     private xhr: BrowserXhr,
-    private checkService: CheckService,
+    private notification: NotificationService,
   ) { }
 
   get(url: string, data?: any, options?: any) {
@@ -73,10 +72,50 @@ export class HttpClientService {
       headers: headers,
       body: JSON.stringify(data.body)
     }).map((response: Response) => {
-      return response.json();
+      const obj = response.json();
+      return obj;
     }).catch((error: any) => {
-      return this.checkService.checkError(error);
+      return this.checkError(error, this.notification);
     }).share();
+  }
+
+  checkError(error, notification) {
+    if (error.status === 401) {
+      // if token is expired
+      if (typeof error.json().msg === 'string' && error.json().msg === 'Invalid token!') {
+        notification.push('', '', 0);
+        notification.push('error', 'You session has expired, please login.', 5000000000);
+        localStorage.removeItem('currentEnterprise');
+        localStorage.removeItem('currentUser');
+        this.tokenExpired.emit(true);
+        this.router.navigate(['/login']);
+      }
+    }
+    if (error.status === 0) {
+      const serverDown = 'Web Server';
+      notification.push('', '', 0); // to clean all old notifications
+      notification.push('error', `The server may be down, too busy,
+                                       or experiencing other problems preventing
+                                       it from responding to requests.`);
+    }
+    const errorMsg = error.message || 'Server error';
+    if (error.status >= 400) {
+      tryCatchErrors(error, error);
+    }
+    return Observable.throw(error);
+
+    function tryCatchErrors(err, errMsg: string) {
+      try {
+        if (typeof error.json().msg === 'string' && error.json().msg !== 'Invalid token!') {
+          notification.push('error', error.json().errors);
+        } else {
+          const apiMessage = error.json().message;
+          notification.push('error', `${apiMessage}`);
+        }
+      } catch (error) {
+        return Observable.throw(errMsg);
+      }
+    }
   }
 
 }
