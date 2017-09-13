@@ -5,7 +5,6 @@ import { Router } from '@angular/router';
 
 import { environment } from '../../environments/environment';
 import { NotificationService } from './notification/notification.service';
-import { CheckService } from './check.service';
 
 @Injectable()
 export class HttpClientService {
