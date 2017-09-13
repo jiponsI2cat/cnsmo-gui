@@ -1,9 +1,12 @@
 import { Node } from './node';
 import { Router } from '@angular/router';
-import { HttpClientService } from 'app/core/http-client.service';
 import { Injectable } from '@angular/core';
 import { Subject } from 'rxjs/Subject';
+
+import { NotificationService } from '../../../core/notification/notification.service';
+import { HttpClientService } from 'app/core/http-client.service';
 import { environment } from '../../../../environments/environment';
+import { Helpers } from '../../../shared/helpers'
 
 @Injectable()
 export class NodesService {
@@ -16,12 +19,13 @@ export class NodesService {
   /**/
   private nodeFlowsUpdatedSource = new Subject<number[]>();       /**/
   nodeFlowsUpdated$ = this.nodeFlowsUpdatedSource.asObservable(); /**/
-  flows = { 'initValue': [] };                                                /**/
+  flows = { 'initValue': [] };                                    /**/
   /******************************************************************/
 
   constructor(
     private http: HttpClientService,
-    private router: Router
+    private router: Router,
+    private notification: NotificationService
   ) { }
 
   /**
@@ -31,20 +35,20 @@ export class NodesService {
    * @param callback
    */
   public getNodes(callback?) {
-    // TODO: hacer el get de las nodes ya iniciadas en el server y llamar el
-    // metodo updateNodes
+    if (this.nodes) { this.updateNodes(this.nodes); }
     const response = this.http.get('/services/sdn/nodes').finally(() => {
       if (callback) {
         callback.apply();
       }
     });
     response.subscribe((data: any) => {
-
-      this.nodes = data;
-      this.updateNodes(data);
+      if (!Helpers.objectsAreEquals(data, this.nodes)) {
+        this.nodes = data;
+        this.updateNodes(data);
+        this.notification.push('info', `Nodes are updated`, 2000);
+      }
     }, (error: any) => {
-      console.log(error);
-      // this.notification.error('Cannot Login!');
+      console.error(error);
     });
   }
 
@@ -62,17 +66,14 @@ export class NodesService {
     response.subscribe((data: any) => {
       this.nodes.push(new Node(node));
       this.updateNodes(this.nodes);
-      console.log(data);
     }, (error: any) => {
-      console.log(error);
+      console.error(error);
       // this.notification.error('Cannot Login!');
     });
     return response;
   }
 
   public getFlowsByNode(instanceId, callback?) {
-    // TODO: hacer el get de las nodes ya iniciadas en el server y llamar el
-    // metodo updateNodes
     if (this.flows[instanceId]) { this.updateFlows(this.flows); }
     const response = this.http.get(`/services/sdn/nodes/${instanceId}/flows`).finally(() => {
       if (callback) {
@@ -80,20 +81,21 @@ export class NodesService {
       }
     });
     response.subscribe((data: any) => {
-
-      this.flows[instanceId] = data;
-      this.updateFlows(this.flows);
+      if (!Helpers.objectsAreEquals(data, this.flows[instanceId])) {
+        this.flows[instanceId] = data;
+        this.updateFlows(this.flows);
+        this.notification.push('info', `${instanceId}'s flows are updated`, 2000);
+      }
     }, (error: any) => {
       this.flows[instanceId] = [-1];
       this.updateFlows(this.flows);
-      console.log(error);
+      console.error(error);
       // this.notification.error('Cannot Login!');
     });
   }
 
   public blockPort(instanceId, port, callback?) {
     const api = environment.api.split('/')[2].split(':')[0];
-    console.log(api);
     const reqData = {
       'tcp-destination-port': port,
       'ip4-destination': `${api}/16`,
@@ -108,7 +110,7 @@ export class NodesService {
       this.flows[instanceId].push(port);
       this.updateFlows(this.flows);
     }, (error: any) => {
-      console.log(error);
+      console.error(error);
       // this.notification.error('Cannot Login!');
     });
   }
@@ -121,4 +123,5 @@ export class NodesService {
   public updateFlows(flows) {
     this.nodeFlowsUpdatedSource.next(flows);
   }
+
 }
