@@ -37,7 +37,7 @@ export class CheckService {
     }
     return Observable.throw(error);
 
-    function tryCatchErrors(err, errMsg, notification) {
+    function tryCatchErrors(err, errMsg: string, notification) {
       try {
         if (typeof error.json().msg === 'string' && error.json().msg !== 'Invalid token!') {
           notification.push('error', error.json().errors);
