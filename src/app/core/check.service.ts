@@ -4,7 +4,6 @@ import { Observable } from 'rxjs/Observable';
 
 import { NotificationService } from './notification/notification.service';
 
-
 @Injectable()
 export class CheckService {
   public tokenExpired: EventEmitter<any> = new EventEmitter<any>();
