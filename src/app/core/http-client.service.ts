@@ -1,16 +1,21 @@
 import { Injectable, EventEmitter } from '@angular/core';
 import { Headers, Http, Response, RequestMethod, BrowserXhr } from '@angular/http';
 import { Observable } from 'rxjs/Rx';
-import { environment } from '../../environments/environment';
 import { Router } from '@angular/router';
+
+import { environment } from '../../environments/environment';
+import { NotificationService } from './notification/notification.service';
+import { CheckService } from './check.service';
 
 @Injectable()
 export class HttpClientService {
+
   public tokenExpired: EventEmitter<any> = new EventEmitter<any>();
   constructor(
     private http: Http,
     private router: Router,
-    private xhr: BrowserXhr
+    private xhr: BrowserXhr,
+    private checkService: CheckService,
   ) { }
 
   get(url: string, data?: any, options?: any) {
@@ -55,11 +60,7 @@ export class HttpClientService {
     const options = data.options || {};
     const headers = new Headers();
     headers.append('Content-Type', 'application/json');
-
-    if (data.url === authUrl) {
-      /* headers.append('Content-Type', 'application/x-www-form-urlencoded');
-      delete data.body; */
-    } else {
+    if (data.url !== authUrl) {
       const userData = JSON.parse(localStorage.getItem('currentUser'));
       if (!userData) {
         this.router.navigate(['/login']);
@@ -72,59 +73,10 @@ export class HttpClientService {
       headers: headers,
       body: JSON.stringify(data.body)
     }).map((response: Response) => {
-      // when there's no content api returns empty string instead of JSON
-      if ((response as any)._body === '') {
-        return null;
-      } else {
-        const obj = response.json();
-        return obj;
-      }
+      return response.json();
     }).catch((error: any) => {
-      return this.checkError(error);
+      return this.checkService.checkError(error);
     }).share();
   }
-
-  /**
-   * This function help the request function to detect
-   * the error and to fire a notification service
-   * to provide a feedback to user through an UI artefact
-   * (notification, message, etc.)
-  */
-  checkError(error) {
-    if (error.status === 401) {
-      // if token is expired
-      if (typeof error.json().msg === 'string' && error.json().msg === 'Invalid token!') {
-        /*this.notification.error('You session has expired, please login.');*/
-        localStorage.removeItem('currentEnterprise');
-        localStorage.removeItem('currentUser');
-        this.tokenExpired.emit(true);
-        this.router.navigate(['/login']);
-      }
-    }
-    if (error.status === 0) {
-      const serverDown = 'Web Server';
-      /*this.notification.error(`The ${serverDown} may be down, too busy,
-                               or experiencing other problems preventing
-                               it from responding to requests.`, 'Ok');*/
-    }
-    const errorMsg = error.message || 'Server error';
-    if (error.status >= 400) {
-      tryCatchErrors(error, error);
-    }
-    return Observable.throw(error);
-
-    function tryCatchErrors(err, errMsg) {
-      try {
-        if (typeof error.json().msg === 'string' && error.json().msg !== 'Invalid token!') {
-          /*this.notification.error(error.json().msg);*/
-        } else {
-          /*this.notification.error(`Error: ` + error.status);*/
-        }
-      } catch (error) {
-        return Observable.throw(errMsg);
-      }
-    }
-  }
-
 
 }
