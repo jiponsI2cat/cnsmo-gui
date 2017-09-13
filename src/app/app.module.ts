@@ -1,3 +1,4 @@
+import { NotificationService } from './core/notification/notification.service';
 import { NgModule } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { Http, HttpModule } from '@angular/http';
@@ -36,7 +37,7 @@ export function HttpLoaderFactory(http: Http) {
             }
         })
     ],
-    providers: [AuthGuard, LoginGuard],
+    providers: [AuthGuard, LoginGuard, NotificationService],
     bootstrap: [AppComponent]
 })
 export class AppModule {

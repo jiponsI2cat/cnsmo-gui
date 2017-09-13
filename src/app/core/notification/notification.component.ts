@@ -16,7 +16,6 @@ export class NotificationComponent {
     this.notifications = new Array<Notification>();
 
     notificationService.noteAdded.subscribe(note => {
-
       /*
        * if time of a note is setted to 0 it clean
        * all existing notifications and returns.
