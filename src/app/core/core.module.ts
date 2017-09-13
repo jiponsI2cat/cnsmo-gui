@@ -9,6 +9,7 @@ import { HttpClientService } from 'app/core/http-client.service';
   imports: [
     CommonModule
   ],
+  exports: [NotificationComponent],
   providers: [AuthService, HttpClientService]
 })
 
