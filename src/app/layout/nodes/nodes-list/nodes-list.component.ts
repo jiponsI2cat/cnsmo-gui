@@ -14,7 +14,7 @@ import { Node } from '../shared/node';
 export class NodesListComponent implements OnInit {
   nodes: Node[];
   loading: boolean;
-  panels = [];
+  openedPanels = [];
 
   constructor(private nodesService: NodesService, private config: NgbAccordionConfig) {
     nodesService.nodesUpdated$.subscribe(nodes => {
@@ -29,10 +29,10 @@ export class NodesListComponent implements OnInit {
   }
 
   beforeChange(clicckedPanel) {
-    this.panels[clicckedPanel.panelId] = clicckedPanel.nextState;
-    for (const panel in this.panels) {
+    this.openedPanels[clicckedPanel.panelId] = clicckedPanel.nextState;
+    for (const panel in this.openedPanels) {
       if (panel !== clicckedPanel.panelId) {
-        this.panels[panel] = false;
+        this.openedPanels[panel] = false;
       }
     }
   }

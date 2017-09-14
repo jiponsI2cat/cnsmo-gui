@@ -1,0 +1,7 @@
+div /deep/ .card-header>a {
+    display: block;
+    text-decoration: none;
+}
+div /deep/ .card-header>a:hover {
+    text-decoration: none;
+}

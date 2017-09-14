@@ -8,16 +8,14 @@
     </ngb-panel>
     <div *ngIf="!loading">
       <ngb-panel *ngFor="let node of nodes; index as i" [id]="node.instanceId">
-        <ng-template ngbPanelTitle>
-          <span style="display:block">
-            <strong><i class="fa fa-server"></i> {{node?.instanceId}} <small>{{node?.ipAddress}}</small></strong>
-            <i class="fa pull-right" [ngClass]="panels && panels[node.instanceId] ? 'fa-chevron-down' : 'fa-chevron-right'"></i>
-          </span>
+        <ng-template ngbPanelTitle class="panelTitle">
+          <strong><i class="fa fa-server"></i> {{node?.instanceId}} <small>{{node?.ipAddress}}</small></strong>
+          <i class="fa pull-right" [ngClass]="openedPanels && openedPanels[node.instanceId] ? 'fa-chevron-down' : 'fa-chevron-right'"></i>
         </ng-template>
         <ng-template ngbPanelContent>
           <div class="card-block">
             <div class="row">
-              <div class="col-md-6">
+              <div class="col-md-12">
                 <h5>Details</h5>
                 <table>
                   <tr>
@@ -30,7 +28,8 @@
                   </tr>
                 </table>
               </div>
-              <div class="col-md-6">
+              <div class="col-md-12">
+                <br/>
                 <h5>Blocked TCP Ports</h5>
                 <app-nodes-flows [instanceId]="node?.instanceId"></app-nodes-flows>
               </div>
