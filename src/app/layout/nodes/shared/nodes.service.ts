@@ -75,7 +75,7 @@ export class NodesService {
 
   public getFlowsByNode(instanceId, callback?) {
     if (this.flows[instanceId]) { this.updateFlows(this.flows); }
-    const response = this.http.get(`/services/sdn/nodes/${instanceId}/flows`).finally(() => {
+    const response = this.http.get(`/services/sdn/nodes/${instanceId}/blockedTcpPorts`).finally(() => {
       if (callback) {
         callback.apply();
       }
