@@ -1,6 +1,7 @@
 import { NodesService } from '../shared/nodes.service';
 import { Component, OnChanges, Input } from '@angular/core';
 import { NgModel } from '@angular/forms';
+import { environment } from '../../../../environments/environment';
 
 @Component({
   selector: 'app-nodes-flows',
@@ -12,6 +13,7 @@ export class NodesFlowsComponent implements OnChanges {
   flows: number[];
   loading = true;
   port = '';
+  defaultDestinationAddress = `${environment.api.split('/')[2].split(':')[0]}/16`;
   constructor(private nodesService: NodesService) {
     nodesService.nodeFlowsUpdated$.subscribe(flows => {
       this.flows = flows;
@@ -26,9 +28,9 @@ export class NodesFlowsComponent implements OnChanges {
     }
   }
 
-  blockPort(port) {
+  blockPort(destinationPort, destinationAddress) {
     this.loading = true;
-    this.nodesService.blockPort(this.instanceId, port);
+    this.nodesService.blockPort(this.instanceId, destinationPort, destinationAddress || this.defaultDestinationAddress);
     this.port = '';
   }
 
