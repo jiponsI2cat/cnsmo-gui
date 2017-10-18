@@ -18,7 +18,8 @@ export class FormInputComponent implements OnInit, OnChanges {
   private validationMessages = {
     required: 'Required field',
     min: 'Value should be greater than ',
-    max: 'Value should be less than '
+    max: 'Value should be less than ',
+    pattern: 'Invalid expression format'
   };
   constructor() { }
 

@@ -1,11 +1,7 @@
-<div class="row">
-  <div class="col-md-12">
 <div class="form-group" [ngClass]="{'has-error': errorMessage, 'inline':inline}">
-  <label class="control-label d-flex align-items-start" [ngClass]="labelCss">{{ labelText }}</label>
-    <div class="d-flex align-items-start" [ngClass]="fieldCss">
+  <label *ngIf="labelText" class="control-label d-flex align-items-start" [ngClass]="labelCss">{{ labelText }}</label>
+  <div class="d-flex align-items-start" [ngClass]="fieldCss">
     <ng-content></ng-content>
-    </div>
-  <span class="text-danger" *ngIf="errorMessage">{{errorMessage}}</span>
-</div>
   </div>
+  <span class="text-danger" *ngIf="errorMessage">{{errorMessage}}</span>
 </div>
