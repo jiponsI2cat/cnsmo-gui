@@ -16,7 +16,7 @@ export class NodesService {
   private nodesUpdatedSource = new Subject<Node[]>();             /**/
   nodesUpdated$ = this.nodesUpdatedSource.asObservable();         /**/
   nodes: Node[];                                                  /**/
-  /**/
+                                                                  /**/
   private nodeFlowsUpdatedSource = new Subject<number[]>();       /**/
   nodeFlowsUpdated$ = this.nodeFlowsUpdatedSource.asObservable(); /**/
   flows = { 'initValue': [] };                                    /**/
