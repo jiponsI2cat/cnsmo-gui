@@ -16,7 +16,7 @@ export class NodesService {
   private nodesUpdatedSource = new Subject<Node[]>();             /**/
   nodesUpdated$ = this.nodesUpdatedSource.asObservable();         /**/
   nodes: Node[];                                                  /**/
-  /**/
+                                                                  /**/
   private nodeFlowsUpdatedSource = new Subject<number[]>();       /**/
   nodeFlowsUpdated$ = this.nodeFlowsUpdatedSource.asObservable(); /**/
   flows = { 'initValue': [] };                                    /**/
@@ -94,11 +94,11 @@ export class NodesService {
     });
   }
 
-  public blockPort(instanceId, port, callback?) {
+  public blockPort(instanceId, destinationPort, destinationAddress, callback?) {
     const api = environment.api.split('/')[2].split(':')[0];
     const reqData = {
-      'tcp-destination-port': port,
-      'ip4-destination': `${api}/16`,
+      'tcp-destination-port': destinationPort,
+      'ip4-destination': destinationAddress || `${api}/16`,
       'ssinstanceid': instanceId
     }
     const response = this.http.put(`/services/sdn/blockByPort`, reqData).finally(() => {
@@ -107,7 +107,7 @@ export class NodesService {
       }
     });
     response.subscribe(() => {
-      this.flows[instanceId].push(port);
+      this.flows[instanceId].push({destinationPort: destinationPort, destinationAddress: destinationAddress});
       this.updateFlows(this.flows);
     }, (error: any) => {
       console.error(error);

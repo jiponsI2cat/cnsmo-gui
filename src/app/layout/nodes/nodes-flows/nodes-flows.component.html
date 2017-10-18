@@ -11,19 +11,32 @@
     <tbody class="ng-tns-c24-2">
       <tr *ngFor="let port of flows[instanceId]; index as i" class="ng-tns-c24-2">
         <th *ngIf="port!=-1" class="ng-tns-c24-2" scope="row">{{i}}</th>
-        <td *ngIf="port!=-1" class="ng-tns-c24-2">{{port}}</td>
-        <td *ngIf="port!=-1" class="ng-tns-c24-2"></td>
+        <td *ngIf="port!=-1" class="ng-tns-c24-2">{{port.destinationPort}}</td>
+        <td *ngIf="port!=-1" class="ng-tns-c24-2">{{port.destinationAddress}}</td>
         <td *ngIf="port!=-1" class="ng-tns-c24-2"><a href="#">Delete</a></td>
       </tr>
-      <tr>
+      <tr [formGroup]="addPortForm">
         <th class="ng-tns-c24-2" scope="row">{{flows[instanceId].length}}</th>
-        <td class="ng-tns-c24-2"><input class="form-control" placeholder="0-65535" type="text" [(ngModel)]="port" #ctrl="ngModel" required></td>
-        <td class="ng-tns-c24-2"><input class="form-control" disabled placeholder="10.36.36.2/16" type="text" [(ngModel)]="ipv4" #ctrl="ngModel"></td>
-        <td class="ng-tns-c24-2"><a href="javascript:void(0)" *ngIf="ctrl.valid" (click)="blockPort(port)">Add</a></td>
+
+
+
+        <td class="ng-tns-c24-2">
+          <app-form-input [control]="addPortForm.controls.destinationPort" [errorDefs]="['required','min','max']">
+            <input type="destinationPort" class="form-control" placeholder="0-65535" formControlName="destinationPort"
+              name="destinationPort">
+          </app-form-input>
+        </td>
+        <td class="ng-tns-c24-2">
+          <app-form-input [control]="addPortForm.controls.destinationAddress" [errorDefs]="['pattern']">
+            <input type="destinationAddress" class="form-control" [placeholder]="defaultDestinationAddress" formControlName="destinationAddress"
+              name="destinationAddress">
+          </app-form-input>
+        </td>
+        
+        <td class="ng-tns-c24-2"><app-form-button type="submit" [loading]="loading" [btnClass]="'btn btn-primary'" [disabled]="!addPortForm.valid">Add</app-form-button></td>
       </tr>
     </tbody>
   </table>
-  
 </div>
 <div *ngIf="loading">
   <i class="fa fa-spinner fa-pulse fa-fw"></i>

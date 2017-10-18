@@ -1,18 +1,28 @@
+import { Component, OnChanges, Input, OnInit } from '@angular/core';
+import { NgModel, FormGroup, FormBuilder, Validators } from '@angular/forms';
+
 import { NodesService } from '../shared/nodes.service';
-import { Component, OnChanges, Input } from '@angular/core';
-import { NgModel } from '@angular/forms';
+import { environment } from '../../../../environments/environment';
+import { Helpers } from 'app/shared/helpers';
 
 @Component({
   selector: 'app-nodes-flows',
   templateUrl: './nodes-flows.component.html',
   styleUrls: ['./nodes-flows.component.scss']
 })
-export class NodesFlowsComponent implements OnChanges {
+
+export class NodesFlowsComponent implements OnChanges, OnInit {
+  private addPortForm: FormGroup;
+  private defaultDestinationAddress = `${environment.api.split('/')[2].split(':')[0]}/16`;
   @Input() instanceId;
   flows: number[];
   loading = true;
   port = '';
-  constructor(private nodesService: NodesService) {
+
+  constructor(
+    private formBuilder: FormBuilder,
+    private nodesService: NodesService
+  ) {
     nodesService.nodeFlowsUpdated$.subscribe(flows => {
       this.flows = flows;
       if (this.flows[this.instanceId]) { this.loading = false; }
@@ -26,9 +36,28 @@ export class NodesFlowsComponent implements OnChanges {
     }
   }
 
-  blockPort(port) {
+  ngOnInit() {
+    this.addPortForm = this.formBuilder.group({
+      destinationPort: [
+        '', [
+          Validators.required,
+          Validators.min(0),
+          Validators.max(65535)]
+      ],
+      destinationAddress: [
+        '',
+        [Validators.pattern(Helpers.ipMaskRegEx)]
+      ]
+    })
+  }
+
+  blockPort(destinationPort, destinationAddress) {
     this.loading = true;
-    this.nodesService.blockPort(this.instanceId, port);
+    this.nodesService.blockPort(
+      this.instanceId,
+      destinationPort,
+      destinationAddress || this.defaultDestinationAddress
+    );
     this.port = '';
   }
 

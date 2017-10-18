@@ -7,12 +7,13 @@ import { CommonModule } from '@angular/common';
 import { NodesRoutingModule } from 'app/layout/nodes/nodes-routing.module';
 import { NodesListComponent } from 'app/layout/nodes/nodes-list/nodes-list.component';
 import { NodesFlowsComponent } from './nodes-flows/nodes-flows.component';
-import { FormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 @NgModule({
   imports: [
     CommonModule,
     NodesRoutingModule,
+    ReactiveFormsModule,
     SharedModule,
     FormsModule,
     NgbModule.forRoot()
