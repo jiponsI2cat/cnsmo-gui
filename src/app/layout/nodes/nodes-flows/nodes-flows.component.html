@@ -22,7 +22,7 @@
 
         <td class="ng-tns-c24-2">
           <app-form-input [control]="addPortForm.controls.destinationPort" [errorDefs]="['required','min','max']">
-            <input type="destinationPort" class="form-control" placeholder="0-65535" formControlName="destinationPort"
+            <input type="number" class="form-control" placeholder="0-65535" formControlName="destinationPort"
               name="destinationPort">
           </app-form-input>
         </td>
