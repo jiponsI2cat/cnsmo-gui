@@ -16,7 +16,7 @@ export class NodesService {
   private nodesUpdatedSource = new Subject<Node[]>();             /**/
   nodesUpdated$ = this.nodesUpdatedSource.asObservable();         /**/
   nodes: Node[];                                                  /**/
-                                                                  /**/
+  /**/
   private nodeFlowsUpdatedSource = new Subject<number[]>();       /**/
   nodeFlowsUpdated$ = this.nodeFlowsUpdatedSource.asObservable(); /**/
   flows = { 'initValue': [] };                                    /**/
@@ -107,9 +107,28 @@ export class NodesService {
       }
     });
     response.subscribe(() => {
-      this.flows[instanceId].push({destinationPort: destinationPort, destinationAddress: destinationAddress});
+      this.flows[instanceId].push({ destinationPort: destinationPort, destinationAddress: destinationAddress });
       this.updateFlows(this.flows);
     }, (error: any) => {
+      console.error(error);
+      // this.notification.error('Cannot Login!');
+    });
+  }
+
+  public deleteFlow(instanceId, flowId, callback?) {
+    const response = this.http.delete(`/services/sdn/nodes/${instanceId}/flows/${flowId}`).finally(() => {
+      if (callback) {
+        callback.apply();
+      }
+    });
+    response.subscribe(() => {
+      this.flows = this.flows[instanceId].filter((flow) => {
+        return flow.flowId !== flowId;
+      });
+      this.updateFlows(this.flows);
+    }, (error: any) => {
+      this.flows[instanceId] = [-1];
+      this.updateFlows(this.flows);
       console.error(error);
       // this.notification.error('Cannot Login!');
     });

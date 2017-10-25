@@ -13,12 +13,10 @@
         <th *ngIf="port!=-1" class="ng-tns-c24-2" scope="row">{{i}}</th>
         <td *ngIf="port!=-1" class="ng-tns-c24-2">{{port.destinationPort}}</td>
         <td *ngIf="port!=-1" class="ng-tns-c24-2">{{port.destinationAddress}}</td>
-        <td *ngIf="port!=-1" class="ng-tns-c24-2"><a href="#">Delete</a></td>
+        <td *ngIf="port!=-1" class="ng-tns-c24-2"><span class="btn btn-danger" (click)="deleteFlow(port.flowId)" >Delete</span></td>
       </tr>
       <tr [formGroup]="addPortForm">
         <th class="ng-tns-c24-2" scope="row">{{flows[instanceId].length}}</th>
-
-
 
         <td class="ng-tns-c24-2">
           <app-form-input [control]="addPortForm.controls.destinationPort" [errorDefs]="['required','min','max']">
@@ -33,7 +31,7 @@
           </app-form-input>
         </td>
         
-        <td class="ng-tns-c24-2"><app-form-button type="submit" [loading]="loading" [btnClass]="'btn btn-primary'" [disabled]="!addPortForm.valid">Add</app-form-button></td>
+        <td class="ng-tns-c24-2"><app-form-button (click)="blockPort()" type="submit" [loading]="loading" [btnClass]="'btn btn-primary'" [disabled]="!addPortForm.valid">Add</app-form-button></td>
       </tr>
     </tbody>
   </table>

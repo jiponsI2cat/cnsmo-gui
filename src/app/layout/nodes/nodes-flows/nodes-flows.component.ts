@@ -51,7 +51,9 @@ export class NodesFlowsComponent implements OnChanges, OnInit {
     })
   }
 
-  blockPort(destinationPort, destinationAddress) {
+  blockPort() {
+    const destinationPort = this.addPortForm.value.destinationPort
+    const destinationAddress = this.addPortForm.value.destinationAddress
     this.loading = true;
     this.nodesService.blockPort(
       this.instanceId,
@@ -59,6 +61,10 @@ export class NodesFlowsComponent implements OnChanges, OnInit {
       destinationAddress || this.defaultDestinationAddress
     );
     this.port = '';
+  }
+
+  deleteFlow(flowId) {
+    this.nodesService.deleteFlow(this.instanceId, flowId);
   }
 
 }
