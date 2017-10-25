@@ -107,8 +107,7 @@ export class NodesService {
       }
     });
     response.subscribe(() => {
-      this.flows[instanceId].push({ destinationPort: destinationPort, destinationAddress: destinationAddress });
-      this.updateFlows(this.flows);
+      this.getFlowsByNode(instanceId);
     }, (error: any) => {
       console.error(error);
       // this.notification.error('Cannot Login!');
@@ -122,9 +121,12 @@ export class NodesService {
       }
     });
     response.subscribe(() => {
-      this.flows = this.flows[instanceId].filter((flow) => {
+      console.log(this.flows)
+      this.flows[instanceId] = this.flows[instanceId].filter((flow) => {
+        console.log(flow);
         return flow.flowId !== flowId;
       });
+      console.log(this.flows)
       this.updateFlows(this.flows);
     }, (error: any) => {
       this.flows[instanceId] = [-1];
