@@ -109,8 +109,10 @@ export class NodesService {
         callback.apply();
       }
     });
-    response.subscribe(() => {
-      this.getFlowsByNode(instanceId);
+    response.subscribe((data) => {
+      const flow = { destinationPort: destinationPort, destinationAddress: destinationAddress, flowId: data.flowId }
+      this.flows[instanceId].push(flow);
+      this.updateFlows(this.flows);
     }, (error: any) => {
       console.error(error);
       this.notification.push('error', error);
@@ -119,21 +121,19 @@ export class NodesService {
   }
 
   public deleteFlow(instanceId, flowId, callback?) {
+    const tempFlows = this.flows[instanceId];
+    this.flows[instanceId] = this.flows[instanceId].filter((flow) => {
+      return flow.flowId !== flowId;
+    });
+    this.updateFlows(this.flows);
     const response = this.http.delete(`/services/sdn/nodes/${instanceId}/flows/${flowId}`).finally(() => {
       if (callback) {
         callback.apply();
       }
     });
     response.subscribe(() => {
-      console.log(this.flows)
-      this.flows[instanceId] = this.flows[instanceId].filter((flow) => {
-        console.log(flow);
-        return flow.flowId !== flowId;
-      });
-      console.log(this.flows)
-      this.updateFlows(this.flows);
     }, (error: any) => {
-      this.flows[instanceId] = [-1];
+      this.flows[instanceId] = tempFlows;
       this.updateFlows(this.flows);
       console.error(error);
       this.notification.push('error', error);

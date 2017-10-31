@@ -1,4 +1,4 @@
-<div *ngIf="!loading">
+<div *ngIf="!loading || flows">
   <table *ngIf="flows && flows[instanceId]" class="table table-hover table-sm">
     <thead class="ng-tns-c24-2">
       <tr class="ng-tns-c24-2">
@@ -13,7 +13,7 @@
         <th *ngIf="port!=-1" class="ng-tns-c24-2" scope="row">{{i}}</th>
         <td *ngIf="port!=-1" class="ng-tns-c24-2">{{port.destinationPort}}</td>
         <td *ngIf="port!=-1" class="ng-tns-c24-2">{{port.destinationAddress}}</td>
-        <td *ngIf="port!=-1" class="ng-tns-c24-2"><span class="btn btn-danger" (click)="deleteFlow(port.flowId)" >Delete</span></td>
+        <td *ngIf="port!=-1" class="ng-tns-c24-2"><app-form-button (click)="deleteFlow(port.flowId)" type="submit" [btnClass]="'btn btn-danger'">Delete</app-form-button></td>
       </tr>
       <tr [formGroup]="addPortForm">
         <th class="ng-tns-c24-2" scope="row">{{flows[instanceId].length}}</th>
@@ -38,5 +38,5 @@
 </div>
 <div *ngIf="loading">
   <i class="fa fa-spinner fa-pulse fa-fw"></i>
-  <span>Loading flows...</span>
+  <span>Loading...</span>
 </div>
