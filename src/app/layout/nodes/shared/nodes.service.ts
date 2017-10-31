@@ -49,6 +49,7 @@ export class NodesService {
       }
     }, (error: any) => {
       console.error(error);
+      this.notification.push('error', error);
     });
   }
 
@@ -68,6 +69,7 @@ export class NodesService {
       this.updateNodes(this.nodes);
     }, (error: any) => {
       console.error(error);
+      this.notification.push('error', error);
       // this.notification.error('Cannot Login!');
     });
     return response;
@@ -90,6 +92,7 @@ export class NodesService {
       this.flows[instanceId] = [-1];
       this.updateFlows(this.flows);
       console.error(error);
+      this.notification.push('error', error);
       // this.notification.error('Cannot Login!');
     });
   }
@@ -110,6 +113,7 @@ export class NodesService {
       this.getFlowsByNode(instanceId);
     }, (error: any) => {
       console.error(error);
+      this.notification.push('error', error);
       // this.notification.error('Cannot Login!');
     });
   }
@@ -132,6 +136,7 @@ export class NodesService {
       this.flows[instanceId] = [-1];
       this.updateFlows(this.flows);
       console.error(error);
+      this.notification.push('error', error);
       // this.notification.error('Cannot Login!');
     });
   }
