@@ -9,8 +9,7 @@ import { Rule } from 'app/layout/firewall/shared/rule';
   styleUrls: ['./add-firewall-rule.component.scss']
 })
 export class AddFirewallRuleComponent implements OnInit {
-  fwRuleForm: FormGroup;
-  private loginForm: FormGroup;
+  private fwRuleForm: FormGroup;
   loading = false;
   constructor(
     private formBuilder: FormBuilder,
