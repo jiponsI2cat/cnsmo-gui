@@ -1,4 +1,4 @@
-<div *ngIf="!loading">
+<div *ngIf="!loading || flows">
   <table *ngIf="flows && flows[instanceId]" class="table table-hover table-sm">
     <thead class="ng-tns-c24-2">
       <tr class="ng-tns-c24-2">
@@ -13,16 +13,14 @@
         <th *ngIf="port!=-1" class="ng-tns-c24-2" scope="row">{{i}}</th>
         <td *ngIf="port!=-1" class="ng-tns-c24-2">{{port.destinationPort}}</td>
         <td *ngIf="port!=-1" class="ng-tns-c24-2">{{port.destinationAddress}}</td>
-        <td *ngIf="port!=-1" class="ng-tns-c24-2"><a href="#">Delete</a></td>
+        <td *ngIf="port!=-1" class="ng-tns-c24-2"><app-form-button (click)="deleteFlow(port.flowId)" type="submit" [btnClass]="'btn btn-danger'">Delete</app-form-button></td>
       </tr>
       <tr [formGroup]="addPortForm">
         <th class="ng-tns-c24-2" scope="row">{{flows[instanceId].length}}</th>
 
-
-
         <td class="ng-tns-c24-2">
           <app-form-input [control]="addPortForm.controls.destinationPort" [errorDefs]="['required','min','max']">
-            <input type="destinationPort" class="form-control" placeholder="0-65535" formControlName="destinationPort"
+            <input type="number" class="form-control" placeholder="0-65535" formControlName="destinationPort"
               name="destinationPort">
           </app-form-input>
         </td>
@@ -33,12 +31,12 @@
           </app-form-input>
         </td>
         
-        <td class="ng-tns-c24-2"><app-form-button type="submit" [loading]="loading" [btnClass]="'btn btn-primary'" [disabled]="!addPortForm.valid">Add</app-form-button></td>
+        <td class="ng-tns-c24-2"><app-form-button (click)="blockPort()" type="submit" [loading]="loading" [btnClass]="'btn btn-primary'" [disabled]="!addPortForm.valid">Add</app-form-button></td>
       </tr>
     </tbody>
   </table>
 </div>
 <div *ngIf="loading">
   <i class="fa fa-spinner fa-pulse fa-fw"></i>
-  <span>Loading flows...</span>
+  <span>Loading...</span>
 </div>
