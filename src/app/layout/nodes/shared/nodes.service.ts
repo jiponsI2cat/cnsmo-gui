@@ -16,7 +16,7 @@ export class NodesService {
   private nodesUpdatedSource = new Subject<Node[]>();             /**/
   nodesUpdated$ = this.nodesUpdatedSource.asObservable();         /**/
   nodes: Node[];                                                  /**/
-                                                                  /**/
+  /**/
   private nodeFlowsUpdatedSource = new Subject<number[]>();       /**/
   nodeFlowsUpdated$ = this.nodeFlowsUpdatedSource.asObservable(); /**/
   flows = { 'initValue': [] };                                    /**/
@@ -49,6 +49,7 @@ export class NodesService {
       }
     }, (error: any) => {
       console.error(error);
+      this.notification.push('error', error);
     });
   }
 
@@ -68,6 +69,7 @@ export class NodesService {
       this.updateNodes(this.nodes);
     }, (error: any) => {
       console.error(error);
+      this.notification.push('error', error);
       // this.notification.error('Cannot Login!');
     });
     return response;
@@ -90,6 +92,7 @@ export class NodesService {
       this.flows[instanceId] = [-1];
       this.updateFlows(this.flows);
       console.error(error);
+      this.notification.push('error', error);
       // this.notification.error('Cannot Login!');
     });
   }
@@ -106,11 +109,34 @@ export class NodesService {
         callback.apply();
       }
     });
-    response.subscribe(() => {
-      this.flows[instanceId].push({destinationPort: destinationPort, destinationAddress: destinationAddress});
+    response.subscribe((data) => {
+      const flow = { destinationPort: destinationPort, destinationAddress: destinationAddress, flowId: data.flowId }
+      this.flows[instanceId].push(flow);
       this.updateFlows(this.flows);
     }, (error: any) => {
       console.error(error);
+      this.notification.push('error', error);
+      // this.notification.error('Cannot Login!');
+    });
+  }
+
+  public deleteFlow(instanceId, flowId, callback?) {
+    const tempFlows = this.flows[instanceId];
+    this.flows[instanceId] = this.flows[instanceId].filter((flow) => {
+      return flow.flowId !== flowId;
+    });
+    this.updateFlows(this.flows);
+    const response = this.http.delete(`/services/sdn/nodes/${instanceId}/flows/${flowId}`).finally(() => {
+      if (callback) {
+        callback.apply();
+      }
+    });
+    response.subscribe(() => {
+    }, (error: any) => {
+      this.flows[instanceId] = tempFlows;
+      this.updateFlows(this.flows);
+      console.error(error);
+      this.notification.push('error', error);
       // this.notification.error('Cannot Login!');
     });
   }

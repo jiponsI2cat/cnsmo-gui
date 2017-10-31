@@ -18,6 +18,7 @@ export class NodesFlowsComponent implements OnChanges, OnInit {
   flows: number[];
   loading = true;
   port = '';
+  deletingFlowId;
 
   constructor(
     private formBuilder: FormBuilder,
@@ -51,14 +52,20 @@ export class NodesFlowsComponent implements OnChanges, OnInit {
     })
   }
 
-  blockPort(destinationPort, destinationAddress) {
+  blockPort() {
     this.loading = true;
+    const destinationPort = this.addPortForm.value.destinationPort
+    const destinationAddress = this.addPortForm.value.destinationAddress
     this.nodesService.blockPort(
       this.instanceId,
       destinationPort,
       destinationAddress || this.defaultDestinationAddress
     );
     this.port = '';
+  }
+
+  deleteFlow(flowId) {
+    this.nodesService.deleteFlow(this.instanceId, flowId);
   }
 
 }
