@@ -2,14 +2,19 @@
   <ngb-accordion [closeOthers]="true" (panelChange)="beforeChange($event)">
     <ngb-panel *ngIf="loading" [disabled]="true">
       <ng-template ngbPanelTitle>
-        <i class="fa fa-spinner fa-pulse fa-fw"></i>
-        <span>Loading nodes...</span>
+        <span>
+          <i class="fa fa-spinner fa-pulse fa-fw"></i>
+          Loading nodes...
+        </span>
       </ng-template>
     </ngb-panel>
     <div *ngIf="!loading">
       <ngb-panel *ngFor="let node of nodes; index as i" [id]="node.instanceId">
         <ng-template ngbPanelTitle class="panelTitle">
-          <strong><i class="fa fa-server"></i> {{node?.instanceId}} <small>{{node?.ipAddress}}</small></strong>
+          <strong>
+            <i class="fa fa-server"></i> {{node?.instanceId}}
+            <small>{{node?.ipAddress}}</small>
+          </strong>
           <i class="fa pull-right" [ngClass]="openedPanels && openedPanels[node.instanceId] ? 'fa-chevron-down' : 'fa-chevron-right'"></i>
         </ng-template>
         <ng-template ngbPanelContent>
@@ -20,11 +25,15 @@
                 <hr />
                 <table>
                   <tr>
-                    <td><strong>Services</strong></td>
+                    <td>
+                      <strong>Services</strong>
+                    </td>
                     <td>{{node?.services.toString()}}</td>
                   </tr>
                   <tr>
-                    <td><strong>VPN Address</strong></td>
+                    <td>
+                      <strong>VPN Address</strong>
+                    </td>
                     <td>{{node?.vpnAddress}}</td>
                   </tr>
                 </table>

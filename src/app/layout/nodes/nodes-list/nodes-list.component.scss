@@ -1,7 +1,5 @@
-div /deep/ .card-header>a {
-    display: block;
-    text-decoration: none;
-}
-div /deep/ .card-header>a:hover {
-    text-decoration: none;
+.card /deep/ {
+    border: 1px solid rgba(0, 0, 0, 0.03);
+    box-shadow: none !important;
+    margin: 4px;
 }

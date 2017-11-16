@@ -1,0 +1,36 @@
+<div class="card mat mb-3">
+  <div class="card-header">
+    Certs
+  </div>
+  <div class="card-body">
+    <p>Generate and visualize certificates for a new client machine you'd like to add in this VPN.</p>
+
+    <div class="row">
+      <div class="input-group col-sm-3">
+        <input type="text" class="form-control" placeholder="VPN Client name">
+        <button class="btn btn-default input-group-addon">Generate</button>
+      </div>
+    </div>
+    <br/>
+    <br/>
+    <div *ngIf="true">
+      <div class="row mb-3">
+        <div class="col-md-6">
+          <app-text-code [title]="'Certificate'" [fileName]="'text.txt'" [fileContent]="exampleText"></app-text-code>
+        </div>
+        <div class="col-md-6">
+          <app-text-code [title]="'Key'" [fileName]="'text.txt'" [fileContent]="exampleText"></app-text-code>
+        </div>
+      </div>
+      <br/>
+      <div class="row">
+        <div class="col-md-6">
+          <app-text-code [title]="'Config'" [fileName]="'text.txt'" [fileContent]="exampleText"></app-text-code>
+        </div>
+        <div class="col-md-6">
+          <app-text-code [title]="'Ca'" [fileName]="'text.txt'" [fileContent]="exampleText"></app-text-code>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

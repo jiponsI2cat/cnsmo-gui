@@ -1,3 +1,8 @@
-<p>
-  vpn works!
-</p>
+<div [@routerTransition]>
+  <app-page-header [heading]="'VPN'" [icon]="'fa-desktop'"></app-page-header>
+  <div class="row">
+    <div class="col col-sm-12">
+      <app-certs></app-certs>
+    </div>
+  </div>
+</div>
