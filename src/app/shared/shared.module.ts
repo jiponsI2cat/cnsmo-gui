@@ -5,6 +5,7 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormInputComponent } from 'app/shared/form-input.component';
 import { FormButtonComponent } from './form-button.component';
+import { TextCodeComponent } from './text-code.component';
 
 @NgModule({
   imports: [
@@ -15,13 +16,15 @@ import { FormButtonComponent } from './form-button.component';
     FormInputComponent,
     FormButtonComponent,
     PageHeaderComponent,
-    StatComponent
+    StatComponent,
+    TextCodeComponent
   ],
   exports: [
     FormInputComponent,
     FormButtonComponent,
     PageHeaderComponent,
-    StatComponent
+    StatComponent,
+    TextCodeComponent
   ]
 })
 

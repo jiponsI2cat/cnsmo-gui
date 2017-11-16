@@ -1,4 +1,4 @@
-$topnav-background-color: #eceeef;
+$topnav-background-color: #f5f5f5;
 .sidebar{
     border-radius: 0;
     position: fixed;
@@ -8,6 +8,7 @@ $topnav-background-color: #eceeef;
     width: 235px;
     margin-left: -235px;
     border: none;
+    box-shadow: 3px 0 6px rgba(0,0,0,.24);
     border-radius: 0;
     overflow-y: auto;
     background-color: $topnav-background-color;

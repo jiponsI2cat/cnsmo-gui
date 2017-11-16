@@ -1,0 +1,20 @@
+<h3>{{title}}</h3>
+<div class="card text-code" style=" margin-top:20px;">
+  <div style="background:#9eaeb5; color:#fff;" class="card-header space-between">
+    <span>
+      <i class="fa fa-file-text-o" aria-hidden="true"></i>
+      {{fileName}}</span>
+    <span>
+      <a href="javascript:void(0)" style="color: white;" (click)="copyText(fileContent,fileName)">
+        <i class="fa fa-clone" aria-hidden="true"></i>
+      </a>
+      &nbsp;
+      <a style="color: white;" [download]="fileName" [attr.href]="downloadableTextCodeUrl(fileContent)">
+        <i class="fa fa-arrow-down" aria-hidden="true"></i>
+      </a>
+    </span>
+  </div>
+  <div style="background:#edf3f5;height:200px;overflow:auto;font-family: monospace; font-size:11px" class="card-body">
+    {{fileContent}}
+  </div>
+</div>
