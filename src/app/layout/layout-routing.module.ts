@@ -8,7 +8,8 @@ const routes: Routes = [
         children: [
             { path: 'dashboard', loadChildren: './dashboard/dashboard.module#DashboardModule' },
             { path: 'firewall', loadChildren: './firewall/firewall.module#FirewallModule' },
-            { path: 'nodes', loadChildren: './nodes/nodes.module#NodesModule' }
+            { path: 'nodes', loadChildren: './nodes/nodes.module#NodesModule' },
+            { path: 'vpn', loadChildren: './vpn/vpn.module#VpnModule'}
         ]
     }
 ];

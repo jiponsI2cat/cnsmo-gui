@@ -20,6 +20,4 @@ export module Helpers {
    * For example, test of '192.168.0.1/24' with this regEx will return true
    */
   export const ipMaskRegEx = /((^|\.)((25[0-5])|(2[0-4]\d)|(1\d\d)|([1-9]?\d))){4}\/(\?:\d|[12]\d|3[01])$/;
-
-
 }

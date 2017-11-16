@@ -45,7 +45,7 @@ export class NodesService {
       if (!Helpers.objectsAreEquals(data, this.nodes)) {
         this.nodes = data;
         this.updateNodes(data);
-        this.notification.push('info', `Nodes are updated`, 2000);
+        // this.notification.push('info', `Nodes are updated`, 2000);
       }
     }, (error: any) => {
       console.error(error);
@@ -86,7 +86,7 @@ export class NodesService {
       if (!Helpers.objectsAreEquals(data, this.flows[instanceId])) {
         this.flows[instanceId] = data;
         this.updateFlows(this.flows);
-        this.notification.push('info', `${instanceId}'s flows are updated`, 2000);
+        // this.notification.push('info', `${instanceId}'s flows are updated`, 2000);
       }
     }, (error: any) => {
       this.flows[instanceId] = [-1];
