@@ -1,3 +1,10 @@
+/**
+ * @author William Friscina
+ * @description This component creates a code text-box by passing from Input
+ * the fileContent and the fileName and allow to copy to clipboard the content
+ * or to download the created file
+ */
+
 import { NotificationService } from '../core/notification/notification.service';
 import { Component, OnInit, Input } from '@angular/core';
 import { DomSanitizer, SafeUrl } from '@angular/platform-browser';
@@ -7,34 +14,45 @@ import { DomSanitizer, SafeUrl } from '@angular/platform-browser';
   templateUrl: './text-code.component.html',
   styleUrls: ['./text-code.component.scss']
 })
+
 export class TextCodeComponent implements OnInit {
 
-  @Input() title;
-  @Input() fileContent;
-  @Input() fileName;
+  @Input() title: string;
+  @Input() fileContent: string;
+  @Input() fileName: string;
 
-  private fileUrl: SafeUrl;
-
-  constructor(private _sanitizer: DomSanitizer, private notification: NotificationService,
+  constructor(
+    private _sanitizer: DomSanitizer,
+    private notification: NotificationService,
   ) { }
 
   ngOnInit() {
   }
 
   /**
-   * Create downloadable file through the url
+   * Create downloadable file SafeUrl through the composed
+   * url from file content
+   *
+   * @param fileContent {string} the content of the file
+   * that will be downloadable
    */
-  downloadableTextCodeUrl(fileContent) {
+  downloadableTextCodeUrl(fileContent: string): SafeUrl {
     const base64content = btoa(fileContent);
-    const url = `data:application/octet-stream;charset=utf-8;base64,${base64content}`;
+    const prefixUrl = 'data:application/octet-stream;charset=utf-8;base64';
+    const url = `${prefixUrl},${base64content}`;
     return this._sanitizer.bypassSecurityTrustUrl(url);
   }
 
   /**
    * Just create a dummy element for copy, append
-   * it to your DOM, copy it and remove it from DOM
+   * it to your DOM, copy it to clipboard and remove it
+   * from DOM
+   *
+   * @param text {string} text to copy to clipboard
+   * @param title {string} title of text to show in
+   * notification snack bar
    */
-  copyText(text, title?) {
+  copyText(text: string, title?: string) {
     const copyElement = document.createElement('textarea');
     copyElement.style.position = 'fixed';
     copyElement.style.opacity = '0';
