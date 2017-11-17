@@ -7,13 +7,16 @@
 
     <div class="row">
       <div class="input-group col-sm-3" [formGroup]="generateForm">
-          <input formControlName="clientName" type="text" class="form-control" placeholder="VPN Client name">
-          <button (click)="generate()" class="btn input-group-addon btn-primary ">Generate</button>
+        <input formControlName="clientName" type="text" class="form-control" placeholder="VPN Client name">
+        <button (click)="generate()" class="btn input-group-addon btn-primary ">Generate</button>
       </div>
     </div>
     <br/>
     <br/>
-    <div *ngIf="true">
+    <span *ngIf="loading" style="width: 100%;text-align:center;display:block">
+      <i class="fa fa-spinner fa-pulse fa-1x fa-fw"></i>
+    </span>
+    <div *ngIf="generated">
       <div class="row mb-3">
         <div class="col-md-6">
           <app-text-code [title]="'Certificate'" [fileName]="'client.crt'" [fileContent]="cert"></app-text-code>

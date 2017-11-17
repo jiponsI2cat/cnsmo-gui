@@ -15,6 +15,9 @@ export class CertsComponent implements OnInit, OnDestroy {
   private config;
   private key;
 
+  generated;
+  loading;
+
   certsSubscription: Subscription;
 
   private generateForm: FormGroup;
@@ -24,11 +27,14 @@ export class CertsComponent implements OnInit, OnDestroy {
     private formBuilder: FormBuilder, ) { }
 
   ngOnInit() {
+    this.generated = false;
     this.certsSubscription = this.vpn.certsUpdated$.subscribe((certs) => {
       this.key = certs.key;
       this.ca = certs.ca;
       this.config = certs.config;
       this.cert = certs.cert;
+      this.loading = false;
+      this.generated = true;
     })
 
     this.generateForm = this.formBuilder.group({
@@ -41,6 +47,8 @@ export class CertsComponent implements OnInit, OnDestroy {
   }
 
   generate() {
+    this.loading = true;
+    this.generated = false;
     const clientName = this.generateForm.value.clientName
     this.vpn.generateCerts(clientName, () => {
       // remove string from input
