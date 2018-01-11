@@ -18,7 +18,7 @@ import { HeaderComponent, SidebarComponent } from '../shared';
     declarations: [
         LayoutComponent,
         HeaderComponent,
-        SidebarComponent
+        SidebarComponent,
     ]
 })
 export class LayoutModule { }
