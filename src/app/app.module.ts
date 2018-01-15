@@ -8,10 +8,10 @@ import { TranslateLoader, TranslateModule } from '@ngx-translate/core';
 import { TranslateHttpLoader } from '@ngx-translate/http-loader';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
-import { AuthGuard } from './shared';
 import { AuthService } from 'app/core/auth.service';
 import { CoreModule } from 'app/core/core.module';
 import { LoginGuard } from 'app/shared/guard';
+import { AuthGuard } from 'app/core/auth.guard';
 // AoT requires an exported function for factories
 export function HttpLoaderFactory(http: Http) {
     // for development
