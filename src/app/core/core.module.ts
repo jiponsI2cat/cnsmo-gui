@@ -3,6 +3,7 @@ import { CommonModule } from '@angular/common';
 import { NotificationComponent } from './notification/notification.component';
 import { AuthService } from 'app/core/auth.service';
 import { HttpClientService } from 'app/core/http-client.service';
+import { AuthGuard } from 'app/shared';
 
 @NgModule({
   declarations: [NotificationComponent],
@@ -10,7 +11,7 @@ import { HttpClientService } from 'app/core/http-client.service';
     CommonModule
   ],
   exports: [NotificationComponent],
-  providers: [AuthService, HttpClientService]
+  providers: [AuthService, HttpClientService, AuthGuard]
 })
 
 export class CoreModule { }

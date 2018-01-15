@@ -1,6 +1,7 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
-import { AuthGuard, LoginGuard } from './shared';
+import { LoginGuard } from './shared';
+import { AuthGuard } from 'app/core/auth.guard';
 
 const routes: Routes = [
     {
@@ -10,8 +11,7 @@ const routes: Routes = [
     },
     {
         path: 'login',
-        loadChildren: './login/login.module#LoginModule',
-        canActivate: [LoginGuard]
+        loadChildren: './login/login.module#LoginModule'
     },
     { path: 'not-found', loadChildren: './not-found/not-found.module#NotFoundModule' },
     { path: '**', redirectTo: 'not-found' }

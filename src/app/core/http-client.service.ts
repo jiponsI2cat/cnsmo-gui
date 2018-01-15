@@ -82,7 +82,7 @@ export class HttpClientService {
   checkError(error, notification) {
     if (error.status === 401) {
       // if token is expired
-      if (typeof error.json().msg === 'string' && error.json().msg === 'Invalid token!') {
+      if (typeof error.json().errors === 'string' && error.json().errors === 'Invalid Token') {
         notification.push('', '', 0);
         notification.push('error', 'You session has expired, please login.', 5000000000);
         localStorage.removeItem('currentEnterprise');
