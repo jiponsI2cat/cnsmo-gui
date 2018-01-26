@@ -4,6 +4,7 @@ import { NgModel, FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { NodesService } from '../shared/nodes.service';
 import { environment } from '../../../../environments/environment';
 import { Helpers } from 'app/shared/helpers';
+import { NgbModal, ModalDismissReasons } from '@ng-bootstrap/ng-bootstrap';
 
 @Component({
   selector: 'app-nodes-flows',
@@ -19,10 +20,14 @@ export class NodesFlowsComponent implements OnChanges, OnInit {
   loading = true;
   port = '';
   deletingFlowId;
+  closeResult: string;
+  monitorId;
+
 
   constructor(
     private formBuilder: FormBuilder,
-    private nodesService: NodesService
+    private nodesService: NodesService,
+    private modalService: NgbModal
   ) {
     nodesService.nodeFlowsUpdated$.subscribe(flows => {
       this.flows = flows;
@@ -66,6 +71,26 @@ export class NodesFlowsComponent implements OnChanges, OnInit {
 
   deleteFlow(flowId) {
     this.nodesService.deleteFlow(this.instanceId, flowId);
+  }
+
+  open(content, monitorId: string) {
+    this.monitorId = monitorId;
+    console.log(content);
+    this.modalService.open(content).result.then((result) => {
+      this.closeResult = `Closed with: ${result}`;
+    }, (reason) => {
+      this.closeResult = `Dismissed ${this.getDismissReason(reason)}`;
+    });
+  }
+
+  private getDismissReason(reason: any): string {
+    if (reason === ModalDismissReasons.ESC) {
+      return 'by pressing ESC';
+    } else if (reason === ModalDismissReasons.BACKDROP_CLICK) {
+      return 'by clicking on a backdrop';
+    } else {
+      return  `with: ${reason}`;
+    }
   }
 
 }

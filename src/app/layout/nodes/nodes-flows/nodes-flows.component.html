@@ -13,15 +13,19 @@
         <th *ngIf="port!=-1" class="ng-tns-c24-2" scope="row">{{i}}</th>
         <td *ngIf="port!=-1" class="ng-tns-c24-2">{{port.destinationPort}}</td>
         <td *ngIf="port!=-1" class="ng-tns-c24-2">{{port.destinationAddress}}</td>
-        <td *ngIf="port!=-1" class="ng-tns-c24-2"><app-form-button (click)="deleteFlow(port.flowId)" type="submit" [btnClass]="'btn btn-danger'">Delete</app-form-button></td>
+        <td *ngIf="port!=-1" class="ng-tns-c24-2">
+          <app-form-button (click)="deleteFlow(port.flowId)" type="submit" [btnClass]="'btn btn-danger'"><i class="fa fa-minus" aria-hidden="true"></i>
+             Delete</app-form-button>
+          <button (click)="open(content, port.flowId.toString())" class="btn btn-info"><i class="fa fa-line-chart" aria-hidden="true"></i>
+             Monitoring</button>
+        </td>
       </tr>
       <tr [formGroup]="addPortForm">
         <th class="ng-tns-c24-2" scope="row">{{flows[instanceId].length}}</th>
 
         <td class="ng-tns-c24-2">
           <app-form-input [control]="addPortForm.controls.destinationPort" [errorDefs]="['required','min','max']">
-            <input type="number" class="form-control" placeholder="0-65535" formControlName="destinationPort"
-              name="destinationPort">
+            <input type="number" class="form-control" placeholder="0-65535" formControlName="destinationPort" name="destinationPort">
           </app-form-input>
         </td>
         <td class="ng-tns-c24-2">
@@ -30,8 +34,11 @@
               name="destinationAddress">
           </app-form-input>
         </td>
-        
-        <td class="ng-tns-c24-2"><app-form-button (click)="blockPort()" type="submit" [loading]="loading" [btnClass]="'btn btn-primary'" [disabled]="!addPortForm.valid">Add</app-form-button></td>
+
+        <td class="ng-tns-c24-2">
+          <app-form-button (click)="blockPort()" type="submit" [loading]="loading" [btnClass]="'btn btn-primary'" [disabled]="!addPortForm.valid"><i class="fa fa-plus" aria-hidden="true"></i>
+             Add</app-form-button>
+        </td>
       </tr>
     </tbody>
   </table>
@@ -40,3 +47,19 @@
   <i class="fa fa-spinner fa-pulse fa-fw"></i>
   <span>Loading...</span>
 </div>
+
+
+<ng-template #content let-c="close" let-d="dismiss">
+  <div class="modal-header">
+    <h4 class="modal-title">Monitoring</h4>
+    <button type="button" class="close" aria-label="Close" (click)="d('Cross click')">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body">
+    <p>FlowId: {{monitorId}}</p>
+  </div>
+  <div class="modal-footer">
+    <button type="button" class="btn btn-outline-dark" (click)="c('Close click')">Close</button>
+  </div>
+</ng-template>

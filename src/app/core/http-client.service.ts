@@ -17,46 +17,41 @@ export class HttpClientService {
     private notification: NotificationService,
   ) { }
 
-  get(url: string, data?: any, options?: any) {
+  get(url: string, data?: any) {
     return this.request({
       url: url,
       method: RequestMethod.Get,
-      body: data,
-      options: options,
+      body: data
     });
   }
 
-  post(url: string, data?: any, options?: any) {
+  post(url: string, data?: any) {
     return this.request({
       url: url,
       method: RequestMethod.Post,
-      body: data,
-      options: options
+      body: data
     });
   }
 
-  put(url: string, data?: any, options?: any) {
+  put(url: string, data?: any) {
     return this.request({
       url: url,
       method: RequestMethod.Put,
-      body: data,
-      options: options
+      body: data
     });
   }
 
-  delete(url: string, data?: any, options?: any) {
+  delete(url: string, data?: any) {
     return this.request({
       url: url,
       method: RequestMethod.Delete,
-      body: data,
-      options: options
+      body: data
     });
   }
 
   request(data: any) {
     const api = environment.api;
     const authUrl = environment.authUrl;
-    const options = data.options || {};
     const headers = new Headers();
     headers.append('Content-Type', 'application/json');
     if (data.url !== authUrl) {
