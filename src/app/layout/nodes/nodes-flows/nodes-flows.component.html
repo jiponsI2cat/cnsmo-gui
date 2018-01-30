@@ -14,10 +14,12 @@
         <td *ngIf="port!=-1" class="ng-tns-c24-2">{{port.destinationPort}}</td>
         <td *ngIf="port!=-1" class="ng-tns-c24-2">{{port.destinationAddress}}</td>
         <td *ngIf="port!=-1" class="ng-tns-c24-2">
-          <app-form-button (click)="deleteFlow(port.flowId)" type="submit" [btnClass]="'btn btn-danger'"><i class="fa fa-minus" aria-hidden="true"></i>
-             Delete</app-form-button>
-          <button (click)="open(content, port.flowId.toString())" class="btn btn-info"><i class="fa fa-line-chart" aria-hidden="true"></i>
-             Monitoring</button>
+          <app-form-button (click)="deleteFlow(port.flowId)" type="submit" [btnClass]="'btn btn-danger btn-sm'">
+            <i class="fa fa-minus" aria-hidden="true"></i>
+            Delete</app-form-button>
+          <button (click)="open(content, port.flowId.toString())" class="btn btn-info btn-sm">
+            <i class="fa fa-line-chart" aria-hidden="true"></i>
+            Monitoring</button>
         </td>
       </tr>
       <tr [formGroup]="addPortForm">
@@ -25,19 +27,20 @@
 
         <td class="ng-tns-c24-2">
           <app-form-input [control]="addPortForm.controls.destinationPort" [errorDefs]="['required','min','max']">
-            <input type="number" class="form-control" placeholder="0-65535" formControlName="destinationPort" name="destinationPort">
+            <input type="number" class="form-control form-control-md" placeholder="0-65535" formControlName="destinationPort" name="destinationPort">
           </app-form-input>
         </td>
         <td class="ng-tns-c24-2">
           <app-form-input [control]="addPortForm.controls.destinationAddress" [errorDefs]="['pattern']">
-            <input type="destinationAddress" class="form-control" [placeholder]="defaultDestinationAddress" formControlName="destinationAddress"
+            <input type="destinationAddress" class="form-control form-control-md" [placeholder]="defaultDestinationAddress" formControlName="destinationAddress"
               name="destinationAddress">
           </app-form-input>
         </td>
 
         <td class="ng-tns-c24-2">
-          <app-form-button (click)="blockPort()" type="submit" [loading]="loading" [btnClass]="'btn btn-primary'" [disabled]="!addPortForm.valid"><i class="fa fa-plus" aria-hidden="true"></i>
-             Add</app-form-button>
+          <app-form-button (click)="blockPort()" type="submit" [loading]="loading" [btnClass]="'btn btn-primary btn-md'" [disabled]="!addPortForm.valid">
+            <i class="fa fa-plus" aria-hidden="true"></i>
+            Add</app-form-button>
         </td>
       </tr>
     </tbody>
@@ -58,6 +61,10 @@
   </div>
   <div class="modal-body">
     <p>FlowId: {{monitorId}}</p>
+    <div>
+      <chart [options]="options" (load)="saveInstance($event.context)"> </chart>
+    </div>
+
   </div>
   <div class="modal-footer">
     <button type="button" class="btn btn-outline-dark" (click)="c('Close click')">Close</button>

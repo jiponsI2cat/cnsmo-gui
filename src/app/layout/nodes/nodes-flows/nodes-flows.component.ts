@@ -5,6 +5,7 @@ import { NodesService } from '../shared/nodes.service';
 import { environment } from '../../../../environments/environment';
 import { Helpers } from 'app/shared/helpers';
 import { NgbModal, ModalDismissReasons } from '@ng-bootstrap/ng-bootstrap';
+import { NgbModalOptions } from '@ng-bootstrap/ng-bootstrap/modal/modal';
 
 @Component({
   selector: 'app-nodes-flows',
@@ -22,17 +23,34 @@ export class NodesFlowsComponent implements OnChanges, OnInit {
   deletingFlowId;
   closeResult: string;
   monitorId;
+  chart: any;
+  options: any;
+  modalOptions: NgbModalOptions = {}
 
+  saveInstance(chartInstance) {
+    this.chart = chartInstance;
+  }
 
   constructor(
     private formBuilder: FormBuilder,
     private nodesService: NodesService,
-    private modalService: NgbModal
+    private modalService: NgbModal,
   ) {
     nodesService.nodeFlowsUpdated$.subscribe(flows => {
       this.flows = flows;
       if (this.flows[this.instanceId]) { this.loading = false; }
     });
+
+    this.options = {
+      chart: {
+        type: 'spline',
+        width: null,
+        zoomType: 'Xy'
+      },
+      title: { text: 'Monitoring' },
+      series: [{ name: 'Packets number', data: [0, 0, 0, 0, 0, 0, 0] }]
+    };
+    setInterval(() => this.chart.series[0].addPoint(Math.random() * 10, true, true), 3000);
   }
 
   ngOnChanges(input) {
@@ -73,14 +91,20 @@ export class NodesFlowsComponent implements OnChanges, OnInit {
     this.nodesService.deleteFlow(this.instanceId, flowId);
   }
 
+
+
   open(content, monitorId: string) {
+
+    this.modalOptions.size = 'lg';
     this.monitorId = monitorId;
     console.log(content);
-    this.modalService.open(content).result.then((result) => {
+    this.modalService.open(content, this.modalOptions).result.then((result) => {
       this.closeResult = `Closed with: ${result}`;
     }, (reason) => {
       this.closeResult = `Dismissed ${this.getDismissReason(reason)}`;
     });
+
+
   }
 
   private getDismissReason(reason: any): string {
@@ -89,7 +113,7 @@ export class NodesFlowsComponent implements OnChanges, OnInit {
     } else if (reason === ModalDismissReasons.BACKDROP_CLICK) {
       return 'by clicking on a backdrop';
     } else {
-      return  `with: ${reason}`;
+      return `with: ${reason}`;
     }
   }
 
