@@ -13,43 +13,45 @@
         <ng-template ngbPanelTitle class="panelTitle">
           <strong>
             <i class="fa fa-server"></i> {{node?.instanceId}}
-            <small>{{node?.ipAddress}}</small>
+            <small>
+              <span>Public: {{node?.ipAddress}}</span> |
+              <span>VPN: {{node?.vpnAddress}}</span> |
+              <span>Cloud: {{node?.cloud}}</span>
+            </small>
           </strong>
           <i class="fa pull-right" [ngClass]="openedPanels && openedPanels[node.instanceId] ? 'fa-chevron-down' : 'fa-chevron-right'"></i>
         </ng-template>
         <ng-template ngbPanelContent>
-          <div class="row">
-            <div class="col-md-12">
-              <h3>Details</h3>
-              <hr />
-              <table>
-                <tr>
-                  <td>
-                    Services:
-                  </td>
-                  <td>{{node?.services.toString()}}</td>
-                </tr>
-                <tr>
-                  <td>
-                    VPN Address:
-                  </td>
-                  <td>{{node?.vpnAddress}}</td>
-                </tr>
-                <tr>
-                  <td>
-                    Cloud:
-                  </td>
-                  <td>{{node?.cloud}}</td>
-                </tr>
-              </table>
-            </div>
-            <div class="col-md-12">
-              <br/>
-              <h3>Blocked TCP Ports</h3>
-              <hr />
-              <app-nodes-flows [instanceId]="node?.instanceId"></app-nodes-flows>
-            </div>
-          </div>
+          <ngb-tabset>
+            <ngb-tab>
+              <ng-template ngbTabTitle>
+                <i class="fa fa-shield"></i> Firewall</ng-template>
+              <ng-template ngbTabContent>
+                <div class="row">
+                  <div class="col-md-12">
+                    <br/>
+                    <h5>Blocked TCP Ports</h5>
+                    <br/>
+                    <app-nodes-flows [instanceId]="node?.instanceId"></app-nodes-flows>
+                  </div>
+                </div>
+              </ng-template>
+            </ngb-tab>
+            <ngb-tab>
+              <ng-template ngbTabTitle>
+                <i class="fa fa-globe"></i> DNS</ng-template>
+              <ng-template ngbTabContent>
+                <!-- DNS CONT-->
+              </ng-template>
+            </ngb-tab>
+            <ngb-tab>
+                <ng-template ngbTabTitle>
+                  <i class="fa fa-line-chart"></i> Monitor Incoming Trafic</ng-template>
+                <ng-template ngbTabContent>
+                  <!-- DNS CONT-->
+                </ng-template>
+              </ngb-tab>
+          </ngb-tabset>
         </ng-template>
       </ngb-panel>
     </div>
