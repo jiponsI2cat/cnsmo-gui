@@ -12,15 +12,19 @@ import { Helpers } from '../../../shared/helpers'
 export class NodesService {
 
 
-  /******** Client Nodes: Source, Observable and List ***************/
-  private nodesUpdatedSource = new Subject<Node[]>();             /**/
-  nodesUpdated$ = this.nodesUpdatedSource.asObservable();         /**/
-  nodes: Node[];                                                  /**/
+  /******** Client Nodes: Source, Observable and List *****************/
+  private numPacketsUpdatedSource = new Subject<number>();          /**/
+  numPacketsUpdated$ = this.numPacketsUpdatedSource.asObservable(); /**/
+  numPackets: number;                                               /**/
   /**/
-  private nodeFlowsUpdatedSource = new Subject<number[]>();       /**/
-  nodeFlowsUpdated$ = this.nodeFlowsUpdatedSource.asObservable(); /**/
-  flows = { 'initValue': [] };                                    /**/
-  /******************************************************************/
+  private nodesUpdatedSource = new Subject<Node[]>();               /**/
+  nodesUpdated$ = this.nodesUpdatedSource.asObservable();           /**/
+  nodes: Node[];                                                    /**/
+  /**/
+  private nodeFlowsUpdatedSource = new Subject<number[]>();         /**/
+  nodeFlowsUpdated$ = this.nodeFlowsUpdatedSource.asObservable();   /**/
+  flows = { 'initValue': [] };                                      /**/
+  /********************************************************************/
 
   constructor(
     private http: HttpClientService,
@@ -138,6 +142,21 @@ export class NodesService {
       console.error(error);
       this.notification.push('error', error);
       // this.notification.error('Cannot Login!');
+    });
+  }
+
+  public getNumPackets(clientId: string, flowId: string, callback?) {
+    const response = this.http.get(`/services/sdn/nodes/${clientId}/flows/${flowId}/monitoring`).finally(() => {
+      if (callback) {
+        callback.apply();
+      }
+    });
+    response.subscribe((data: any) => {
+      this.numPackets = data.numPackets;
+      this.numPacketsUpdatedSource.next(this.numPackets);
+    }, (error: any) => {
+      console.error(error);
+      this.notification.push('error', error);
     });
   }
 
