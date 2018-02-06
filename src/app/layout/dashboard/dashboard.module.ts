@@ -14,6 +14,7 @@ import {
     NotificationComponent,
     ChatComponent
 } from './components';
+import { NodesModule } from 'app/layout/nodes/nodes.module';
 
 @NgModule({
     imports: [
@@ -21,7 +22,8 @@ import {
         NgbCarouselModule.forRoot(),
         NgbAlertModule.forRoot(),
         DashboardRoutingModule,
-        SharedModule
+        SharedModule,
+        NodesModule
     ],
     declarations: [
         DashboardComponent,

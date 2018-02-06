@@ -57,6 +57,48 @@ export class NodesService {
     });
   }
 
+/*   public getNodesCount(callback?) {
+    const s = new Subject<number>();
+    const response = this.http.get('/services/sdn/nodes').finally(() => {
+      if (callback) {
+        callback.apply();
+      }
+    });
+    response.subscribe((data: any) => {
+      s.next(data.length);
+    }, (error: any) => {
+      this.notification.push('error', error);
+    });
+    return s.asObservable();
+  } */
+
+  public getStats(callback?) {
+    const s = new Subject<[Number, Object]>();
+    const response = this.http.get('/services/sdn/nodes').finally(() => {
+      if (callback) {
+        callback.apply();
+      }
+    });
+    response.subscribe((data: any) => {
+      const parsedServices = data[0].services.replace(/[\[\]\"\ ]/g, '').split(',');
+      const services = [
+        { name: 'sdn', active: false, label: 'Firewall' },
+        { name: 'vpn', active: false, label: 'VPN' },
+        { name: 'dns', active: false, label: 'DNS' },
+        { name: 'lb', active: false, label: 'Load Balancer' }
+      ];
+      parsedServices.forEach(element => {
+        services.find((service) => service.name === element).active = true;
+      });
+      s.next([data.length, services]);
+    }, (error: any) => {
+      this.notification.push('error', error);
+    });
+    return s.asObservable();
+  }
+
+
+
   /**
    * This add a new node to sdn and notify the result
    * @param node {object} An object with sdn nodes parameters
