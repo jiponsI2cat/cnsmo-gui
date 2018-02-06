@@ -1,17 +1,26 @@
 <div [@routerTransition]>
     <h2 class="text-muted">CNSMO Dashboard <small>Statistics Overview</small></h2>
+    <br/>
     <div class="row">
-        <div class="col-xl-3 col-lg-6">
-            <app-stat [bgClass]="'card-primary'" [link]="['/firewall']" [icon]="'fa-shield'" [count]="3" [label]="'Firewall Rules'"></app-stat>
+        <div class="col-xl-6 col-lg-6">
+            <app-stat [bgClass]="'card-primary'" [link]="['/nodes']" [icon]="'fa-server'" [count]="2" [label]="'SDN Nodes'"></app-stat>
         </div>
-        <div class="col-xl-3 col-lg-6">
-            <app-stat [bgClass]="'card-info'" [link]="['/nodes']" [icon]="'fa-server'" [count]="2" [label]="'SDN Nodes'"></app-stat>
+    </div>
+    <hr/>
+    <h2>Active Services</h2>
+    <br/>
+    <div class="row">       
+        <div class="col-xl-3 col-lg-3">
+            <app-stat [bgClass]="'card-info'" [icon]="'fa-check-circle'" [label]="'Firewall'"></app-stat>
         </div>
-        <!-- <div class="col-xl-3 col-lg-6">
-            <app-stat [bgClass]="'card-success'" [icon]="'fa-shopping-cart'" [count]="124" [label]="'New Orders!'"></app-stat>
+        <div class="col-xl-3 col-lg-3">
+            <app-stat [bgClass]="'card-info'" [icon]="'fa-check-circle'" [label]="'VPN'"></app-stat>
         </div>
-        <div class="col-xl-3 col-lg-6">
-            <app-stat [bgClass]="'card-danger'" [icon]="'fa-support'" [count]="13" [label]="'New Tickets!'"></app-stat>
-        </div> -->
+        <div class="col-xl-3 col-lg-3">
+            <app-stat [bgClass]="'card-info'" [icon]="'fa-check-circle'" [label]="'DNS'"></app-stat>
+        </div>
+        <div class="col-xl-3 col-lg-3">
+            <app-stat [bgClass]="'card-disabled'" [icon]="'fa-ban'" [label]="'LB'"></app-stat>
+        </div>
     </div>
 </div>
