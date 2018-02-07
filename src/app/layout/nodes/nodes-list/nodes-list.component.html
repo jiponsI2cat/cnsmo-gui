@@ -41,7 +41,7 @@
               <ng-template ngbTabTitle>
                 <i class="fa fa-globe"></i> DNS</ng-template>
               <ng-template ngbTabContent>
-                <!-- DNS CONT-->
+                <app-dns-tab [publicIp]="node?.ipAddress" [privateIp]="node?.vpnAddress"></app-dns-tab>
               </ng-template>
             </ngb-tab>
             <ngb-tab>

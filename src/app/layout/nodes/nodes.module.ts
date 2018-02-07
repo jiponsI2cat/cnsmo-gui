@@ -11,6 +11,7 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { ChartModule } from 'angular2-highcharts';
 import * as highcharts from 'highcharts';
 import { HighchartsStatic } from 'angular2-highcharts/dist/HighchartsService';
+import { DnsTabComponent } from './dns-tab/dns-tab.component';
 export declare let require: any;
 
 export function highchartsFactory() {
@@ -34,7 +35,8 @@ export function highchartsFactory() {
   declarations: [
     NodesComponent,
     NodesListComponent,
-    NodesFlowsComponent
+    NodesFlowsComponent,
+    DnsTabComponent
   ],
   providers: [
     NodesService,

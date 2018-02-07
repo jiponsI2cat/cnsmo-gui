@@ -1,0 +1,18 @@
+<form [formGroup]="privateIpDnsForm" (ngSubmit)="onSubmitPrivate()" class="inline-flx">
+  <app-form-input [labelText]="'Private'" [control]="privateIpDnsForm.controls.ip" [errorDefs]="['required','min','max']">
+    <input type="text" class="form-control" formControlName="ip" name="ip" />
+  </app-form-input>
+  <app-form-input [labelText]="'Hostname*'" [control]="privateIpDnsForm.controls.hostname" [errorDefs]="['required']">
+    <input type="text" class="form-control" formControlName="hostname" name="hostname" />
+  </app-form-input>
+  <app-form-button class="btn-patch" type="submit" [loading]="loadingPrivate" [btnClass]="'btn btn-primary'" [disabled]="!privateIpDnsForm.valid">Add</app-form-button>
+</form>
+<form [formGroup]="publicIpDnsForm" (ngSubmit)="onSubmitPublic()" class="inline-flx">
+  <app-form-input [labelText]="'Public'" [control]="publicIpDnsForm.controls.ip" [errorDefs]="['required','min','max']">
+    <input type="text" class="form-control" formControlName="ip" name="ip" />
+  </app-form-input>
+  <app-form-input [labelText]="'Hostname*'" [control]="publicIpDnsForm.controls.hostname" [errorDefs]="['required']">
+    <input type="text" class="form-control" formControlName="hostname" name="hostname" />
+  </app-form-input>
+  <app-form-button class="btn-patch" type="submit" [loading]="loadingPublic" [btnClass]="'btn btn-primary'" [disabled]="!publicIpDnsForm.valid">Add</app-form-button>
+</form>
