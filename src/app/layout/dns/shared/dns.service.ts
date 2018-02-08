@@ -51,15 +51,16 @@ export class DnsService {
     });
     response.subscribe((data) => {
       const entry = new DnsRecord(dnsRecord)
-      this.dnsRecords.push(entry);
-      this.updateDnsRecords(this.dnsRecords);
+      if (this.dnsRecords) {
+        this.dnsRecords.push(entry);
+        this.updateDnsRecords(this.dnsRecords);
+      }
+      this.notification.push('info', `${dnsRecord} is added to DNS records`, 2000);
     }, (error: any) => {
       console.error(error);
       this.notification.push('error', error);
-      // this.notification.error('Cannot Login!');
     });
-
-
+    return response;
   }
 
 }

@@ -60,8 +60,7 @@
     </button>
   </div>
   <div class="modal-body">
-    <p>FlowId: {{monitorId}}</p>
-    <div>
+    <div class="flex-center">
       <chart [options]="options" (load)="saveInstance($event.context)"> </chart>
     </div>
 
