@@ -15,8 +15,9 @@ import { Helpers } from 'app/shared/helpers';
 
 export class NodesFlowsComponent implements OnChanges, OnInit {
   private addPortForm: FormGroup;
-  private defaultDestinationAddress = `${environment.api.split('/')[2].split(':')[0]}/16`;
   @Input() instanceId;
+  @Input() clientIp;
+  private defaultDestinationAddress = `${this.clientIp/* environment.api.split('/')[2].split(':')[0] */}/24`;
   flows: number[];
   loading = true;
   port = '';
@@ -46,6 +47,9 @@ export class NodesFlowsComponent implements OnChanges, OnInit {
 
   }
   ngOnChanges(input) {
+    if (input.clientIp) {
+      this.defaultDestinationAddress = `${this.clientIp}/24`;
+    }
     if (input.instanceId) {
       this.loading = true;
       this.nodesService.getFlowsByNode(this.instanceId);

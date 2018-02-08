@@ -91,6 +91,8 @@ export class NodesService {
         services.find((service) => service.name === element).active = true;
       });
       s.next([data.length, services]);
+      this.nodes = data;
+      this.updateNodes(data);
     }, (error: any) => {
       this.notification.push('error', error);
     });

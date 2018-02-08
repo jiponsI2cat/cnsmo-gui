@@ -11,7 +11,9 @@ const routes: Routes = [
             { path: 'firewall', loadChildren: './firewall/firewall.module#FirewallModule' },
             { path: 'nodes', loadChildren: './nodes/nodes.module#NodesModule' },
             { path: 'vpn', loadChildren: './vpn/vpn.module#VpnModule' },
-            { path: 'dns', loadChildren: './dns/dns.module#DnsModule'}
+            { path: 'dns', loadChildren: './dns/dns.module#DnsModule'},
+            { path: 'lb', loadChildren: './lb/lb.module#LbModule'},
+            { path: 'logs', loadChildren: './logs/logs.module#LogsModule'},
         ]
     }
 ];
