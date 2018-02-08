@@ -12,15 +12,19 @@ import { Helpers } from '../../../shared/helpers'
 export class NodesService {
 
 
-  /******** Client Nodes: Source, Observable and List ***************/
-  private nodesUpdatedSource = new Subject<Node[]>();             /**/
-  nodesUpdated$ = this.nodesUpdatedSource.asObservable();         /**/
-  nodes: Node[];                                                  /**/
+  /******** Client Nodes: Source, Observable and List *****************/
+  private numPacketsUpdatedSource = new Subject<number>();          /**/
+  numPacketsUpdated$ = this.numPacketsUpdatedSource.asObservable(); /**/
+  numPackets: number;                                               /**/
   /**/
-  private nodeFlowsUpdatedSource = new Subject<number[]>();       /**/
-  nodeFlowsUpdated$ = this.nodeFlowsUpdatedSource.asObservable(); /**/
-  flows = { 'initValue': [] };                                    /**/
-  /******************************************************************/
+  private nodesUpdatedSource = new Subject<Node[]>();               /**/
+  nodesUpdated$ = this.nodesUpdatedSource.asObservable();           /**/
+  nodes: Node[];                                                    /**/
+  /**/
+  private nodeFlowsUpdatedSource = new Subject<number[]>();         /**/
+  nodeFlowsUpdated$ = this.nodeFlowsUpdatedSource.asObservable();   /**/
+  flows = { 'initValue': [] };                                      /**/
+  /********************************************************************/
 
   constructor(
     private http: HttpClientService,
@@ -52,6 +56,50 @@ export class NodesService {
       this.notification.push('error', error);
     });
   }
+
+/*   public getNodesCount(callback?) {
+    const s = new Subject<number>();
+    const response = this.http.get('/services/sdn/nodes').finally(() => {
+      if (callback) {
+        callback.apply();
+      }
+    });
+    response.subscribe((data: any) => {
+      s.next(data.length);
+    }, (error: any) => {
+      this.notification.push('error', error);
+    });
+    return s.asObservable();
+  } */
+
+  public getStats(callback?) {
+    const s = new Subject<[Number, Object]>();
+    const response = this.http.get('/services/sdn/nodes').finally(() => {
+      if (callback) {
+        callback.apply();
+      }
+    });
+    response.subscribe((data: any) => {
+      const parsedServices = data[0].services.replace(/[\[\]\"\ ]/g, '').split(',');
+      const services = [
+        { name: 'sdn', active: false, label: 'Firewall' },
+        { name: 'vpn', active: false, label: 'VPN' },
+        { name: 'dns', active: false, label: 'DNS' },
+        { name: 'lb', active: false, label: 'Load Balancer' }
+      ];
+      parsedServices.forEach(element => {
+        services.find((service) => service.name === element).active = true;
+      });
+      s.next([data.length, services]);
+      this.nodes = data;
+      this.updateNodes(data);
+    }, (error: any) => {
+      this.notification.push('error', error);
+    });
+    return s.asObservable();
+  }
+
+
 
   /**
    * This add a new node to sdn and notify the result
@@ -138,6 +186,21 @@ export class NodesService {
       console.error(error);
       this.notification.push('error', error);
       // this.notification.error('Cannot Login!');
+    });
+  }
+
+  public getNumPackets(clientId: string, flowId: string, callback?) {
+    const response = this.http.get(`/services/sdn/nodes/${clientId}/flows/${flowId}/monitoring`).finally(() => {
+      if (callback) {
+        callback.apply();
+      }
+    });
+    response.subscribe((data: any) => {
+      this.numPackets = data.numPackets;
+      this.numPacketsUpdatedSource.next(this.numPackets);
+    }, (error: any) => {
+      console.error(error);
+      this.notification.push('error', error);
     });
   }
 

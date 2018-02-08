@@ -8,6 +8,19 @@ import { NodesRoutingModule } from 'app/layout/nodes/nodes-routing.module';
 import { NodesListComponent } from 'app/layout/nodes/nodes-list/nodes-list.component';
 import { NodesFlowsComponent } from './nodes-flows/nodes-flows.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { ChartModule } from 'angular2-highcharts';
+import * as highcharts from 'highcharts';
+import { HighchartsStatic } from 'angular2-highcharts/dist/HighchartsService';
+import { DnsTabComponent } from './dns-tab/dns-tab.component';
+export declare let require: any;
+
+export function highchartsFactory() {
+  const hc = require('highcharts');
+  const dd = require('highcharts/modules/drilldown');
+  dd(hc);
+
+  return hc;
+}
 
 @NgModule({
   imports: [
@@ -16,13 +29,20 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
     ReactiveFormsModule,
     SharedModule,
     FormsModule,
-    NgbModule.forRoot()
+    NgbModule.forRoot(),
+    ChartModule
   ],
   declarations: [
     NodesComponent,
     NodesListComponent,
-    NodesFlowsComponent
+    NodesFlowsComponent,
+    DnsTabComponent
   ],
-  providers: [NodesService]
+  providers: [
+    NodesService,
+    {
+      provide: HighchartsStatic,
+      useFactory: highchartsFactory
+    }],
 })
 export class NodesModule { }
