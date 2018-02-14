@@ -13,6 +13,7 @@ export class DnsTabComponent implements OnInit {
 
   @Input() publicIp;
   @Input() privateIp;
+  @Input() defaultHostname;
   private publicIpDnsForm: FormGroup;
   private privateIpDnsForm: FormGroup;
   private loadingPublic: boolean;
@@ -31,14 +32,14 @@ export class DnsTabComponent implements OnInit {
   initPrivateForm() {
     this.privateIpDnsForm = this.formBuilder.group({
       ip: { value: this.privateIp, disabled: true },
-      hostname: ['', Validators.required],
+      hostname: [this.defaultHostname || '', Validators.required],
     });
   }
 
   initPublicForm() {
     this.publicIpDnsForm = this.formBuilder.group({
       ip: { value: this.publicIp, disabled: true },
-      hostname: ['', Validators.required],
+      hostname: [this.defaultHostname || '', Validators.required],
     });
   }
 

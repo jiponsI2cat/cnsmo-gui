@@ -41,7 +41,6 @@ export class VpnService {
           cert: dataCerts[2].data,
           ca: dataCerts[3].data
         });
-        console.log(certs);
         this.updateCerts(certs);
       });
     }, (error: any) => {
