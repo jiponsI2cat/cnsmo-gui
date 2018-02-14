@@ -1,6 +1,6 @@
 export class DnsRecord {
 
-  private dnsRecord: string;
+  public dnsRecord: string;
 
   constructor(data?) {
     console.log(data);

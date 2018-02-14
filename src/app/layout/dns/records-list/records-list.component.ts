@@ -17,7 +17,18 @@ export class RecordsListComponent implements OnInit {
   constructor(private dnsService: DnsService, private formBuilder: FormBuilder) {
     dnsService.dnsRecordsUpdated$.subscribe(dnsRecords => {
       console.log(dnsRecords);
-      this.dnsRecords = dnsRecords;
+      this.dnsRecords = dnsRecords.filter((record) => {
+        const ipv6 = Helpers.ipv6RegEx;
+
+        const entry = record.dnsRecord.split(' ')[0];
+
+        return !ipv6.test(record.dnsRecord.split(' ')[0]) &&
+          entry !== '\n' &&
+          entry !== '#' &&
+          entry !== '127.0.0.1' &&
+          entry !== '127.0.1.1';
+
+      });
       this.loading = false;
     });
   }
