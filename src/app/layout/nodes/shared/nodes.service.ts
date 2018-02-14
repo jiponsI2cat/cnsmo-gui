@@ -17,6 +17,10 @@ export class NodesService {
   numPacketsUpdated$ = this.numPacketsUpdatedSource.asObservable(); /**/
   numPackets: number;                                               /**/
   /**/
+  private numIncomingUpdatedSource = new Subject<Object>();          /**/
+  numIncomingUpdated$ = this.numIncomingUpdatedSource.asObservable(); /**/
+  numIncoming: Object;
+  /**/
   private nodesUpdatedSource = new Subject<Node[]>();               /**/
   nodesUpdated$ = this.nodesUpdatedSource.asObservable();           /**/
   nodes: Node[];                                                    /**/
@@ -57,20 +61,20 @@ export class NodesService {
     });
   }
 
-/*   public getNodesCount(callback?) {
-    const s = new Subject<number>();
-    const response = this.http.get('/services/sdn/nodes').finally(() => {
-      if (callback) {
-        callback.apply();
-      }
-    });
-    response.subscribe((data: any) => {
-      s.next(data.length);
-    }, (error: any) => {
-      this.notification.push('error', error);
-    });
-    return s.asObservable();
-  } */
+  /*   public getNodesCount(callback?) {
+      const s = new Subject<number>();
+      const response = this.http.get('/services/sdn/nodes').finally(() => {
+        if (callback) {
+          callback.apply();
+        }
+      });
+      response.subscribe((data: any) => {
+        s.next(data.length);
+      }, (error: any) => {
+        this.notification.push('error', error);
+      });
+      return s.asObservable();
+    } */
 
   public getStats(callback?) {
     const s = new Subject<[Number, Object]>();
@@ -198,6 +202,21 @@ export class NodesService {
     response.subscribe((data: any) => {
       this.numPackets = data.numPackets;
       this.numPacketsUpdatedSource.next(this.numPackets);
+    }, (error: any) => {
+      console.error(error);
+      this.notification.push('error', error);
+    });
+  }
+
+  public getNumIncoming(clientId: string, callback?) {
+    const response = this.http.get(`/services/sdn/nodes/${clientId}/monitoring/incoming`).finally(() => {
+      if (callback) {
+        callback.apply();
+      }
+    });
+    response.subscribe((data: any) => {
+      this.numIncoming = data;
+      this.numIncomingUpdatedSource.next(this.numIncoming);
     }, (error: any) => {
       console.error(error);
       this.notification.push('error', error);

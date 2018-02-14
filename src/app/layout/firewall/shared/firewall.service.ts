@@ -57,7 +57,6 @@ export class FirewallService {
     response.subscribe((data: any) => {
       this.rules.push(new Rule(rule));
       this.updateRules(this.rules);
-      console.log(data);
     }, (error: any) => {
       console.log(error);
       // this.notification.error('Cannot Login!');

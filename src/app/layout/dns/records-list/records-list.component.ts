@@ -16,18 +16,13 @@ export class RecordsListComponent implements OnInit {
 
   constructor(private dnsService: DnsService, private formBuilder: FormBuilder) {
     dnsService.dnsRecordsUpdated$.subscribe(dnsRecords => {
-      console.log(dnsRecords);
       this.dnsRecords = dnsRecords.filter((record) => {
-        const ipv6 = Helpers.ipv6RegEx;
-
         const entry = record.dnsRecord.split(' ')[0];
-
-        return !ipv6.test(record.dnsRecord.split(' ')[0]) &&
-          entry !== '\n' &&
-          entry !== '#' &&
-          entry !== '127.0.0.1' &&
-          entry !== '127.0.1.1';
-
+        const ipv6 = Helpers.ipv6RegEx;
+        const isIpv6 = ipv6.test(entry);
+        const validCharacters = (entry !== '\n' && entry !== '#');
+        const validIpv4 = (entry !== '127.0.0.1' && entry !== '127.0.1.1');
+        return !isIpv6 && validCharacters && validIpv4
       });
       this.loading = false;
     });
