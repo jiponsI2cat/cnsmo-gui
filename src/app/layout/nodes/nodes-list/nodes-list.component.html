@@ -41,14 +41,14 @@
               <ng-template ngbTabTitle>
                 <i class="fa fa-globe"></i> DNS</ng-template>
               <ng-template ngbTabContent>
-                <app-dns-tab [publicIp]="node?.ipAddress" [privateIp]="node?.vpnAddress"></app-dns-tab>
+                <app-dns-tab [publicIp]="node?.ipAddress" [defaultHostname]="node?.instanceId" [privateIp]="node?.vpnAddress"></app-dns-tab>
               </ng-template>
             </ngb-tab>
             <ngb-tab>
                 <ng-template ngbTabTitle>
                   <i class="fa fa-line-chart"></i> Monitor Incoming Trafic</ng-template>
                 <ng-template ngbTabContent>
-                  <!-- DNS CONT-->
+                  <chart [options]="options" (load)="saveInstance($event.context)"> </chart>
                 </ng-template>
               </ngb-tab>
           </ngb-tabset>
