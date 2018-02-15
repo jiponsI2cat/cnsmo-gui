@@ -12,6 +12,7 @@ import { ChartModule } from 'angular2-highcharts';
 import * as highcharts from 'highcharts';
 import { HighchartsStatic } from 'angular2-highcharts/dist/HighchartsService';
 import { DnsTabComponent } from './dns-tab/dns-tab.component';
+import { MonitorChartComponent } from './shared/monitor-chart/monitor-chart.component';
 export declare let require: any;
 
 export function highchartsFactory() {
@@ -36,7 +37,8 @@ export function highchartsFactory() {
     NodesComponent,
     NodesListComponent,
     NodesFlowsComponent,
-    DnsTabComponent
+    DnsTabComponent,
+    MonitorChartComponent
   ],
   providers: [
     NodesService,
