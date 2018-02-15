@@ -7,6 +7,7 @@ import { Subscription } from 'rxjs/Subscription';
   templateUrl: './monitor-chart.component.html',
   styleUrls: ['./monitor-chart.component.scss']
 })
+
 export class MonitorChartComponent implements OnInit, OnDestroy {
 
   @Input() instanceId;

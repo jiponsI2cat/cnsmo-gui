@@ -25,36 +25,10 @@ export class NodesListComponent implements OnInit {
     });
   }
 
-  saveInstance(chartInstance) {
-    this.chart = chartInstance;
-  }
 
   ngOnInit() {
     this.loading = true;
     this.nodesService.getNodes();
-
-    this.options = {
-      chart: {
-        type: 'spline',
-        width: null,
-        zoomType: 'Xy'
-      },
-      title: { text: 'Monitoring' },
-      series: [
-        { name: 'Incoming', data: [0, 0, 0, 0, 0, 0, 0] },
-        { name: 'Outcoming', data: [0, 0, 0, 0, 0, 0, 0] }
-      ]
-    };
-
-    this.nodesService.numIncomingUpdated$.subscribe(data => {
-      this.chart.series[0].addPoint((data as any).inTraffic, true, true);
-      this.chart.series[0].addPoint((data as any).outTraffic, true, true);
-    });
-
-    const refresh = setInterval(() => this.nodesService.getNumIncoming('Client.1')
-    , 60000);
-
-
   }
 
 
