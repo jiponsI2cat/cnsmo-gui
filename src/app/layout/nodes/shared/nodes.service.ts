@@ -221,6 +221,7 @@ export class NodesService {
       console.error(error);
       this.notification.push('error', error);
     });
+    return response;
   }
 
   public updateNodes(nodes) {
