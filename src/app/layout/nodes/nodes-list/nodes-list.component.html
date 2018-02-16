@@ -30,7 +30,7 @@
                 <div class="row">
                   <div class="col-md-12">
                     <br/>
-                    <h5>Blocked TCP Ports</h5>
+                    <h5>Accepted rules</h5>
                     <br/>
                     <app-nodes-flows [instanceId]="node?.instanceId" [clientIp]="node?.ipAddress"></app-nodes-flows>
                   </div>
@@ -44,13 +44,13 @@
                 <app-dns-tab [publicIp]="node?.ipAddress" [defaultHostname]="node?.instanceId" [privateIp]="node?.vpnAddress"></app-dns-tab>
               </ng-template>
             </ngb-tab>
-            <ngb-tab>
+            <!-- <ngb-tab>
                 <ng-template ngbTabTitle>
                   <i class="fa fa-line-chart"></i> Monitor Incoming Trafic</ng-template>
                 <ng-template ngbTabContent>
                   <app-monitor-chart [instanceId]="node?.instanceId"></app-monitor-chart>
                 </ng-template>
-              </ngb-tab>
+              </ngb-tab> -->
           </ngb-tabset>
         </ng-template>
       </ngb-panel>
