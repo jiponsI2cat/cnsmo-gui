@@ -1,4 +1,4 @@
-import { Component, OnChanges, Input, OnInit } from '@angular/core';
+import { Component, OnChanges, Input, OnInit, OnDestroy } from '@angular/core';
 import { NgModel, FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { NgbModal, ModalDismissReasons } from '@ng-bootstrap/ng-bootstrap';
 import { NgbModalOptions } from '@ng-bootstrap/ng-bootstrap/modal/modal';
@@ -6,6 +6,7 @@ import { NgbModalOptions } from '@ng-bootstrap/ng-bootstrap/modal/modal';
 import { NodesService } from '../shared/nodes.service';
 import { environment } from '../../../../environments/environment';
 import { Helpers } from 'app/shared/helpers';
+import { Subscription } from 'rxjs/Subscription';
 
 @Component({
   selector: 'app-nodes-flows',
@@ -13,7 +14,7 @@ import { Helpers } from 'app/shared/helpers';
   styleUrls: ['./nodes-flows.component.scss']
 })
 
-export class NodesFlowsComponent implements OnChanges, OnInit {
+export class NodesFlowsComponent implements OnChanges, OnInit, OnDestroy {
   private addPortForm: FormGroup;
   @Input() instanceId;
   @Input() clientIp;
@@ -28,6 +29,8 @@ export class NodesFlowsComponent implements OnChanges, OnInit {
   options: any;
   modalOptions: NgbModalOptions = {}
   isOpenMonitoring: boolean;
+  subscription: Subscription;
+  timeout;
 
   saveInstance(chartInstance) {
     this.chart = chartInstance;
@@ -43,7 +46,19 @@ export class NodesFlowsComponent implements OnChanges, OnInit {
       if (this.flows[this.instanceId]) { this.loading = false; }
     });
 
-    nodesService.numPacketsUpdated$.subscribe(numPackets => this.chart.series[0].addPoint(numPackets, true, true));
+    nodesService.numPacketsUpdated$.subscribe((numPackets) => {
+
+      if (numPackets.length > 1) {
+
+        const byterate = numPackets[1] - numPackets[0];
+
+        if (this.chart.series[0].processedXData.length === 5) {
+          this.chart.series[0].addPoint(byterate, true, true);
+          return;
+        }
+        this.chart.series[0].addPoint(numPackets[0]);
+      }
+    });
 
   }
   ngOnChanges(input) {
@@ -69,6 +84,12 @@ export class NodesFlowsComponent implements OnChanges, OnInit {
         [Validators.pattern(Helpers.ipMaskRegEx)]
       ]
     })
+  }
+
+  ngOnDestroy() {
+    if (this.subscription) {
+      this.subscription.unsubscribe();
+    }
   }
 
   blockPort() {
@@ -97,20 +118,37 @@ export class NodesFlowsComponent implements OnChanges, OnInit {
         width: null,
         zoomType: 'Xy'
       },
-      title: { text: 'Monitoring' },
-      series: [{ name: 'Packets number', data: [0, 0, 0, 0, 0, 0, 0] }]
+      title: { text: 'Monitoring Flow' },
+      series: [{ name: 'Byte per seconds', data: [] }]
     };
 
+    this.launchMonitoring();
 
-    const refresh = setInterval(() => this.nodesService.getNumPackets(this.instanceId, this.monitorId)
-      , 3000);
+
     this.modalService.open(content, this.modalOptions).result.then((result) => {
-      clearInterval(refresh);
+      clearTimeout(this.timeout);
+      this.subscription.unsubscribe();
+
       this.closeResult = `Closed with: ${result}`;
     }, (reason) => {
-      clearInterval(refresh);
+      clearTimeout(this.timeout);
+      this.subscription.unsubscribe();
       this.closeResult = `Dismissed ${this.getDismissReason(reason)}`;
     });
+  }
+
+  launchMonitoring() {
+
+    if (this.subscription) {
+      this.subscription.unsubscribe();
+    }
+
+    this.timeout = setTimeout(() => {
+      this.subscription = this.nodesService.getNumPackets(this.instanceId, this.monitorId).subscribe(() => {
+        this.launchMonitoring();
+      });
+    }, 3000);
+
   }
 
   private getDismissReason(reason: any): string {

@@ -13,9 +13,9 @@ export class NodesService {
 
 
   /******** Client Nodes: Source, Observable and List *****************/
-  private numPacketsUpdatedSource = new Subject<number>();          /**/
+  private numPacketsUpdatedSource = new Subject<number[]>();          /**/
   numPacketsUpdated$ = this.numPacketsUpdatedSource.asObservable(); /**/
-  numPackets: number;                                               /**/
+  numPackets: number[] = [];                                               /**/
   /**/
   private numIncomingUpdatedSource = new Subject<Object>();          /**/
   numIncomingUpdated$ = this.numIncomingUpdatedSource.asObservable(); /**/
@@ -200,12 +200,19 @@ export class NodesService {
       }
     });
     response.subscribe((data: any) => {
-      this.numPackets = data.numPackets;
-      this.numPacketsUpdatedSource.next(this.numPackets);
+      if (this.numPackets.length > 1) {
+        this.numPackets.shift();
+        this.numPackets.push(data.numPackets);
+        this.numPacketsUpdatedSource.next(this.numPackets);
+      } else {
+        this.numPackets.push(data.numPackets);
+        this.numPacketsUpdatedSource.next(this.numPackets);
+      }
     }, (error: any) => {
       console.error(error);
       this.notification.push('error', error);
     });
+    return response;
   }
 
   public getNumIncoming(clientId: string, callback?) {
