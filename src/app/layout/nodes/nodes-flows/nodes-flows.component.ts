@@ -25,12 +25,22 @@ export class NodesFlowsComponent implements OnChanges, OnInit, OnDestroy {
   deletingFlowId;
   closeResult: string;
   monitorId;
+  numPacketsLength = 0;
   chart: any;
-  options: any;
   modalOptions: NgbModalOptions = {}
   isOpenMonitoring: boolean;
   subscription: Subscription;
   timeout;
+  options = {
+    chart: {
+      type: 'spline',
+      width: null,
+      zoomType: 'Xy'
+    },
+    title: { text: '' },
+    series: [{ name: 'Byte per seconds', data: [] }]
+  };
+  numPoints = 20;
 
   saveInstance(chartInstance) {
     this.chart = chartInstance;
@@ -45,21 +55,6 @@ export class NodesFlowsComponent implements OnChanges, OnInit, OnDestroy {
       this.flows = flows;
       if (this.flows[this.instanceId]) { this.loading = false; }
     });
-
-    nodesService.numPacketsUpdated$.subscribe((numPackets) => {
-
-      if (numPackets.length > 1) {
-
-        const byterate = numPackets[1] - numPackets[0];
-
-        if (this.chart.series[0].processedXData.length === 5) {
-          this.chart.series[0].addPoint(byterate, true, true);
-          return;
-        }
-        this.chart.series[0].addPoint(numPackets[0]);
-      }
-    });
-
   }
   ngOnChanges(input) {
     if (input.clientIp) {
@@ -83,7 +78,23 @@ export class NodesFlowsComponent implements OnChanges, OnInit, OnDestroy {
         '',
         [Validators.pattern(Helpers.ipMaskRegEx)]
       ]
-    })
+    });
+
+    this.nodesService.numPacketsUpdated$.subscribe((numPackets) => {
+      if (this.numPacketsLength < 5) {
+        this.numPacketsLength += (numPackets.length > 0) ? 1 : 0;
+      }
+      if (numPackets.length > 1) {
+
+        const byterate = numPackets[1] - numPackets[0];
+
+        if (this.chart && this.chart.series[0].processedXData.length === this.numPoints) {
+          this.chart.series[0].addPoint(byterate, true, true);
+          return;
+        }
+        this.chart.series[0].addPoint(numPackets[0]);
+      }
+    });
   }
 
   ngOnDestroy() {
@@ -112,15 +123,10 @@ export class NodesFlowsComponent implements OnChanges, OnInit, OnDestroy {
     this.modalOptions.size = 'lg';
     this.monitorId = monitorId;
 
-    this.options = {
-      chart: {
-        type: 'spline',
-        width: null,
-        zoomType: 'Xy'
-      },
-      title: { text: 'Monitoring Flow' },
-      series: [{ name: 'Byte per seconds', data: [] }]
-    };
+    if (this.chart) {
+      this.chart.series[0].setData([]);
+      this.numPacketsLength = 0;
+    }
 
     this.launchMonitoring();
 
@@ -142,12 +148,11 @@ export class NodesFlowsComponent implements OnChanges, OnInit, OnDestroy {
     if (this.subscription) {
       this.subscription.unsubscribe();
     }
-
     this.timeout = setTimeout(() => {
       this.subscription = this.nodesService.getNumPackets(this.instanceId, this.monitorId).subscribe(() => {
         this.launchMonitoring();
       });
-    }, 3000);
+    }, this.numPacketsLength > 4 ? 3000 : 100);
 
   }
 
