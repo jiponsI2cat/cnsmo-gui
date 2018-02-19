@@ -21,6 +21,24 @@
             <i class="fa fa-line-chart" aria-hidden="true"></i>
             Monitoring</button>
         </td>
+
+        <ng-template #content let-c="close" let-d="dismiss">
+          <div class="modal-header">
+            <h4 class="modal-title">Monitoring <{{instanceId}}></h4>
+            <button type="button" class="close" aria-label="Close" (click)="d('Cross click')">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div class="modal-body">
+            <h5 class="text-center">Monitoring Rule #{{i}}</h5>
+            <div class="flex-center">
+              <chart [options]="options" (load)="saveInstance($event.context)"> </chart>
+            </div>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-outline-dark" (click)="c('Close click')">Close</button>
+          </div>
+        </ng-template>
       </tr>
       <tr [formGroup]="addPortForm">
         <th class="ng-tns-c24-2" scope="row">{{flows[instanceId].length}}</th>
@@ -44,28 +62,12 @@
         </td>
       </tr>
     </tbody>
+
+
+
   </table>
 </div>
 <div *ngIf="loading && !flows">
   <i class="fa fa-spinner fa-pulse fa-fw"></i>
   <span>Loading...</span>
 </div>
-
-
-<ng-template #content let-c="close" let-d="dismiss">
-  <div class="modal-header">
-    <h4 class="modal-title">Monitoring</h4>
-    <button type="button" class="close" aria-label="Close" (click)="d('Cross click')">
-      <span aria-hidden="true">&times;</span>
-    </button>
-  </div>
-  <div class="modal-body">
-    <div class="flex-center">
-      <chart [options]="options" (load)="saveInstance($event.context)"> </chart>
-    </div>
-
-  </div>
-  <div class="modal-footer">
-    <button type="button" class="btn btn-outline-dark" (click)="c('Close click')">Close</button>
-  </div>
-</ng-template>
