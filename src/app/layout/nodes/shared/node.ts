@@ -1,6 +1,6 @@
 export class Node {
 
-  private instanceId: string;
+  public instanceId: string;
   private services: string;
   private vpnAddress: string;
 

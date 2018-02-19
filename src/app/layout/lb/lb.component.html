@@ -1,7 +1,22 @@
 <app-page-header [heading]="'Load Balancer'" [icon]="'fa-share'"></app-page-header>
 
-<ul>
-  <li>LB Port: 8585</li>
-  <li>LB Node: Client</li>
-  <li>LB Mode: least connections</li>
-</ul>
+<div class="input-group">
+  <span class="input-group-addon">LB Port</span>
+  <input id="port" type="text" class="form-control" name="port" value="8095" disabled>
+</div>
+<br/>
+<div class="input-group">
+  <span class="input-group-addon">LB Node</span>
+  <input *ngIf="client" id="port" type="text" class="form-control" name="port" [value]="client" disabled>
+  <div *ngIf="!client">&nbsp;
+    <i class="fa fa-spinner fa-pulse fa-fw"></i>
+    Loading</div>
+</div>
+<br/>
+<div class="input-group">
+  <span class="input-group-addon">LB Mode</span>
+
+  <select id="disabledSelect" class="form-control" disabled>
+      <option>Least Connection</option>
+    </select>
+</div>
