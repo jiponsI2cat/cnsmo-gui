@@ -3,12 +3,14 @@ import { CommonModule } from '@angular/common';
 import { LbComponent } from './lb.component';
 import { LbRoutingModule } from './lb-routing.module';
 import { SharedModule } from '../../shared/shared.module';
+import { NodesModule } from '../nodes/nodes.module';
 
 @NgModule({
   imports: [
     CommonModule,
     LbRoutingModule,
-    SharedModule
+    SharedModule,
+    NodesModule
   ],
   declarations: [LbComponent]
 })
