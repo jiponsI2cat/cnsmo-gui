@@ -16,8 +16,7 @@ export class LbComponent implements OnInit {
 
   constructor(private nodesService: NodesService, private config: NgbAccordionConfig) {
     nodesService.nodesUpdated$.subscribe(nodes => {
-      console.log(nodes[0].instanceId);
-      this.client = nodes[0].instanceId;
+      this.client = nodes[0].instanceId.split('.')[0];
       this.loading = false;
     });
   }
