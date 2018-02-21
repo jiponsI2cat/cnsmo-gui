@@ -85,6 +85,9 @@ export class NodesFlowsComponent implements OnChanges, OnInit, OnDestroy {
         this.numPacketsLength += (numPackets.length > 0) ? 1 : 0;
       }
       if (numPackets.length > 1) {
+        console.log('Num packets anterior' + numPackets[0]);
+        console.log('Num packets actual' + numPackets[1]);
+        console.log(numPackets);
 
         const byterate = numPackets[1] - numPackets[0];
 
@@ -92,7 +95,7 @@ export class NodesFlowsComponent implements OnChanges, OnInit, OnDestroy {
           this.chart.series[0].addPoint(byterate, true, true);
           return;
         }
-        this.chart.series[0].addPoint(numPackets[0]);
+        this.chart.series[0].addPoint(byterate);
       }
     });
   }
