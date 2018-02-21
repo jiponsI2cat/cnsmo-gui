@@ -30,7 +30,9 @@ export class NodesFlowsComponent implements OnChanges, OnInit, OnDestroy {
   modalOptions: NgbModalOptions = {}
   isOpenMonitoring: boolean;
   subscription: Subscription;
+  byteRateZerosCounter = 0;
   timeout;
+  byterate = 0;
   options = {
     chart: {
       type: 'spline',
@@ -85,18 +87,32 @@ export class NodesFlowsComponent implements OnChanges, OnInit, OnDestroy {
         this.numPacketsLength += (numPackets.length > 0) ? 1 : 0;
       }
       if (numPackets.length > 1) {
-        console.log('Num packets anterior' + numPackets[0]);
-        console.log('Num packets actual' + numPackets[1]);
-        console.log(numPackets);
+        console.log('num packets anterior: ' + numPackets[0].num);
+        console.log('timestamp anterior: ' + numPackets[0].timeStamp);
+        console.log('num packets actual: ' + numPackets[1].num);
+        console.log('timestamp actual: ' + numPackets[1].timeStamp);
+        console.log('ultimo byterate: ' + this.byterate);
 
-        const byterate = numPackets[1] - numPackets[0];
-
+        if (numPackets[1].num !== numPackets[0].num || !this.byterate) {
+          this.byteRateZerosCounter = 0;
+          this.byterate = (numPackets[1].num - numPackets[0].num) / (numPackets[1].timeStamp - numPackets[0].timeStamp);
+          this.byterate = this.byterate * 1000;
+        } else {
+          this.byteRateZerosCounter++;
+          if (this.byteRateZerosCounter > 3) {
+            this.byteRateZerosCounter = 0;
+            this.byterate = 0;
+          }
+        }
         if (this.chart && this.chart.series[0].processedXData.length === this.numPoints) {
-          this.chart.series[0].addPoint(byterate, true, true);
+          this.chart.series[0].addPoint(this.byterate, true, true);
           return;
         }
-        this.chart.series[0].addPoint(byterate);
+        if (this.chart) {
+          this.chart.series[0].addPoint(this.byterate);
+        }
       }
+
     });
   }
 
