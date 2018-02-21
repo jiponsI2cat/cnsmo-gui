@@ -13,9 +13,9 @@ export class NodesService {
 
 
   /******** Client Nodes: Source, Observable and List *****************/
-  private numPacketsUpdatedSource = new Subject<number[]>();          /**/
+  private numPacketsUpdatedSource = new Subject<any[]>();          /**/
   numPacketsUpdated$ = this.numPacketsUpdatedSource.asObservable(); /**/
-  numPackets: number[] = [];                                               /**/
+  numPackets: any[] = [];                                               /**/
   /**/
   private numIncomingUpdatedSource = new Subject<Object>();          /**/
   numIncomingUpdated$ = this.numIncomingUpdatedSource.asObservable(); /**/
@@ -202,7 +202,7 @@ export class NodesService {
     response.subscribe((data: any) => {
       if (this.numPackets.length > 1) {
         this.numPackets.shift();
-        this.numPackets.push(data.numPackets);
+        this.numPackets.push({ num: data.numPackets, timeStamp: Date.now() });
         this.numPacketsUpdatedSource.next(this.numPackets);
       } else {
         this.numPackets.push(data.numPackets);
